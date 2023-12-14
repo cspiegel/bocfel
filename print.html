@@ -1,0 +1,905 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Bocfel</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "ayu";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="cheating.html"><strong aria-hidden="true">2.</strong> Cheating</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cheats.html"><strong aria-hidden="true">2.1.</strong> Cheats</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="infocom13.html"><strong aria-hidden="true">2.1.1.</strong> Infocom version 1-3 games</a></li><li class="chapter-item expanded "><a href="cutthroads.html"><strong aria-hidden="true">2.1.2.</strong> Cutthroats</a></li><li class="chapter-item expanded "><a href="enchanter.html"><strong aria-hidden="true">2.1.3.</strong> Enchanter</a></li><li class="chapter-item expanded "><a href="sorcerer.html"><strong aria-hidden="true">2.1.4.</strong> Sorcerer</a></li><li class="chapter-item expanded "><a href="spellbreaker.html"><strong aria-hidden="true">2.1.5.</strong> Spellbreaker</a></li><li class="chapter-item expanded "><a href="planetfall.html"><strong aria-hidden="true">2.1.6.</strong> Planetfall</a></li></ol></li><li class="chapter-item expanded "><a href="finding_cheats.html"><strong aria-hidden="true">2.2.</strong> Finding cheats</a></li></ol></li><li class="chapter-item expanded "><a href="meta.html"><strong aria-hidden="true">3.</strong> Meta commands</a></li><li class="chapter-item expanded "><a href="man.html"><strong aria-hidden="true">4.</strong> Man page</a></li><li class="chapter-item expanded "><a href="downloads.html"><strong aria-hidden="true">5.</strong> Downloads</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Bocfel</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="bocfel-z-machine-interpreter"><a class="header" href="#bocfel-z-machine-interpreter">Bocfel Z-machine interpreter</a></h2>
+<h3 id="overview"><a class="header" href="#overview">Overview</a></h3>
+<p>Bocfel is an interpreter for the <a href="http://en.wikipedia.org/wiki/Z-machine">Z-machine</a>. It fully supports versions 1-5, 7, and 8, and contains partial support for version 6. For detailed information on Bocfel’s operation, please consult the <a href="bocfel.html">man page</a>.</p>
+<p>Bocfel can be downloaded from the <a href="downloads.html">downloads page</a>.</p>
+<h3 id="the-z-machine"><a class="header" href="#the-z-machine">The Z-machine</a></h3>
+<p>The Z-machine was designed to run text adventure games, also known as interactive fiction. Originally the only Z-machine games were created by Infocom, the company that created the Z-machine. These include such games as Zork, The Hitchhiker’s Guide to the Galaxy, and Planetfall. Fans of the genre figured out the format of the Z-machine, allowing non-Infocom interpreters, such as this one, to be built.</p>
+<p>After that, a compiler for the Z-machine, called Inform, was released. Initially a language meant for programmers, the latest iteration of Inform is intended to allow non-programmers to easily write interactive fiction. Thanks to Inform, hundreds of Z-machine story files have been written by enthusiasts, a number of which are of extremely high quality.</p>
+<p>Although interactive fiction is today a rather niche genre, it has a loyal following of both players and authors, and can be explored through the following resources, among others:</p>
+<ul>
+<li><a href="http://ifdb.tads.org/">The Interactive Fiction Database</a></li>
+<li><a href="http://www.ifwiki.org/">IFWiki</a></li>
+<li><a href="http://www.ifcomp.org/">Annual Interactive Fiction Competition</a></li>
+<li><a href="http://xyzzyawards.org/">XYZZY Awards</a></li>
+<li><a href="http://www.intfiction.org/forum/">The Interactive Fiction Community Forum</a></li>
+<li>The newsgroups <a href="news:rec.arts.int-fiction">rec.arts.int-fiction</a> and <a href="news:rec.games.int-fiction">rec.games.int-fiction</a></li>
+</ul>
+<h3 id="screenshots"><a class="header" href="#screenshots">Screenshots</a></h3>
+<ul>
+<li><a href="screenshots/bd_curses.png">Beyond Zork</a> running under <a href="http://www.eblong.com/zarf/glk/">glktermw</a>.</li>
+<li><a href="screenshots/bomber_garglk.png">The Mad Bomber</a> running under <a href="https://github.com/garglk/garglk">garglk</a>.</li>
+<li><a href="screenshots/etude_none.png">TerpEtude</a> running under the “dumb” interface which, despite its name, understands a bit about Unix terminals.</li>
+<li><a href="screenshots/mingsheng_garglk.png">Mingsheng</a> running under garglk, showing off Unicode support.</li>
+<li><a href="screenshots/plundered_qglk.png">Plundered Hearts</a> running under <a href="https://gitlab.com/lacc97/qglk">QGlk</a>.</li>
+<li><a href="screenshots/tangler_garglk.png">Spider and Web</a> Russian translation running under garglk, also showing off Unicode.</li>
+<li><a href="screenshots/zork_winglk.png">Zork</a> running under <a href="http://www.ifarchive.org/indexes/if-archiveXprogrammingXglkXimplementations.html">Windows Glk</a>.</li>
+<li><a href="screenshots/dreamhold_nanoglk.png">The Dreamhold</a> running under <a href="http://www.ifarchive.org/indexes/if-archiveXprogrammingXglkXimplementations.html">NanoGlk</a>.</li>
+<li><a href="screenshots/jigsaw_fabularium.png">Jigsaw</a> running under <a href="https://play.google.com/store/apps/details?id=com.luxlunae.fabularium&amp;hl=en_US">Fabularium</a>.</li>
+<li><a href="screenshots/anchorhead_remglk.png">Anchorhead</a> running under <a href="http://www.eblong.com/zarf/glk/">GlkOte and RemGlk</a>.</li>
+<li><a href="screenshots/hitchhiker_glkdos.png">The Hitchhiker’s Guide to the Galaxy</a> running under <a href="https://www.ifarchive.org/indexes/if-archiveXprogrammingXglkXimplementations.html">GlkDOS</a>.</li>
+</ul>
+<h3 id="some-of-bocfels-features"><a class="header" href="#some-of-bocfels-features">Some of Bocfel’s features</a></h3>
+<ul>
+<li>Almost no platform-specific functions are used—and those that are used are optional—so almost any system with a recent C compiler should be able to build and run Bocfel.</li>
+<li>Makes use of <a href="http://eblong.com/zarf/glk/">Glk</a> for input/ouput, with complete support for <a href="https://github.com/garglk/garglk">Gargoyle</a>; a non-Glk “dumb” interface is also available.</li>
+<li>Support (assuming a font with Unicode box-drawing characters) for the character graphics font used by Beyond Zork.</li>
+<li>Unicode support: see, for example, Chinese characters used by <a href="http://ifdb.tads.org/viewgame?id=wjkg89918ttdbkm2">Mingsheng</a> or the Russian translation of <a href="http://ifdb.tads.org/viewgame?id=2xyccw3pe0uovfad">Spider and Web</a>.</li>
+<li>Multiple undo in almost all games, including those which do not natively support it.</li>
+<li>Full control over command recording, transcripting, and command-record playback.</li>
+<li>Rudimentary “<a href="cheating.html">cheating</a>” support, designed to disable hunger and thirst daemons.</li>
+</ul>
+<p>Only the source code to Bocfel is provided here. If you are interested in a runnable binary, Ben Cressey has integrated Bocfel into the latest version of <a href="https://github.com/garglk/garglk">Gargoyle</a> as the default Z-machine interpreter.</p>
+<h3 id="bugs"><a class="header" href="#bugs">Bugs</a></h3>
+<p>Please report bugs to <a href="https://github.com/garglk/garglk/issues">Gargoyle’s issue tracker</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="cheating"><a class="header" href="#cheating">Cheating</a></h2>
+<p>Bocfel includes rudimentary support for cheating, by allowing certain areas of memory (represented by their addresses) to be frozen such that they always contain specific values. As a result, you are able to do things such as always having money, never being hungry, and so on.</p>
+<p>Addresses are typically represented in hexadecimal.  However, the Z-machine has the concept of global variables. Global variables are simply named addresses. For example, the global variable <code>G00</code> of a particular game might map to the address <code>0x1212</code>, and as such, these two addresses are interchangeable. When displaying addresses, the global variable notation is used if an address is a global variable. Otherwise, the address is displayed in hexadecimal.</p>
+<p>This section provides cheats for some Infocom games and also explains how to find other cheats.</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="cheats"><a class="header" href="#cheats">Cheats</a></h2>
+<p>This section gathers cheats for various games that can be employed using Bocfel’s cheat system.  In a few places, the value 65535 is used and might appear to be out of place.  When interpreted as a negative value on a 16-bit system (like the Z-machine), 65535 represents -1.  For cheats, however, only unsigned (non-negative) values are used, so for negative values, they must be “encoded” as positive values.</p>
+<p><strong>Please note</strong>: These cheats have not been thoroughly tested, or tested much at all.  Use at your own risk.  There is no guarantee that a game will be completable if these cheats are used.</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="infocom-version-1-3-games"><a class="header" href="#infocom-version-1-3-games">Infocom version 1-3 games</a></h2>
+<p>Version 1 and 2 games are <em>score</em> games, and version 3 games are either <em>score</em> or <em>time</em> games.  <em>Score</em> games keep track of a user’s score and number of moves (e.g. <em>Enchanter</em>), while <em>time</em> games keep track of the time (e.g. <em>Wishbringer</em>).  The same memory locations are always used to store these, so the following cheats apply to all version 1-3 games.</p>
+<p>For <em>score</em> games, the score is kept in global variable <code>G01</code> and the number of moves is kept in global variable <code>G02</code>.</p>
+<p>For <em>time</em> games, the hour (in the range [0, 23]) is kept in global variable <code>G01</code> and the minutes (in the range [0, 59]) are kept in global variable <code>G02</code>.</p>
+<h4 id="examples"><a class="header" href="#examples">Examples</a></h4>
+<pre><code># Lock the score at 50.
+cheat = freeze:G01:50
+
+# Lock the number of moves at 25.
+cheat = freeze:G02:25
+
+# Lock the time at 5:45PM.
+cheat = freeze:G01:17
+cheat = freeze:G02:45
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="cutthroats"><a class="header" href="#cutthroats">Cutthroats</a></h2>
+<p>These cheats are for <em>Cutthroats</em> version 23-840809.</p>
+<h4 id="hunger"><a class="header" href="#hunger">Hunger</a></h4>
+<p>The global variable <code>Gb9</code> tracks hunger.  It can take the following values:</p>
+<ul>
+<li>0: Not hungry.</li>
+<li>1: A bit hungry.</li>
+<li>2: Pretty hungry.</li>
+<li>3: Very hungry.</li>
+<li>4: Extremely hungry.</li>
+</ul>
+<pre><code>cheat = freeze:Gb9:0
+</code></pre>
+<h4 id="thirst"><a class="header" href="#thirst">Thirst</a></h4>
+<p>The global variable <code>G07</code> tracks thirst.  It can take the following values:</p>
+<ul>
+<li>0: Not thirsty.</li>
+<li>1: A little thirsty.</li>
+<li>2: Fairly thirsty.</li>
+<li>3: Very thirsty.</li>
+<li>4: Utterly parched.</li>
+</ul>
+<pre><code>cheat = freeze:G07:0
+</code></pre>
+<h4 id="sleepiness"><a class="header" href="#sleepiness">Sleepiness</a></h4>
+<p>The global variable <code>Gba</code> tracks sleepiness.  It can take the following values:</p>
+<ul>
+<li>0: Half awake.</li>
+<li>1: Wide awake (cannot sleep, even in bed).</li>
+<li>2: Wide awake (but can still sleep in bed).</li>
+<li>3: A bit drowsy.</li>
+<li>4: Fairly tired.</li>
+<li>5: Very sleepy.</li>
+<li>6: Dead on your feet.</li>
+</ul>
+<pre><code>cheat = freeze:Gba:1
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="enchanter"><a class="header" href="#enchanter">Enchanter</a></h2>
+<p>These cheats are for <em>Enchanter</em> version 29-860820.</p>
+<h4 id="hunger-1"><a class="header" href="#hunger-1">Hunger</a></h4>
+<p>The global variable <code>G40</code> tracks hunger.  It can take the following values:</p>
+<ul>
+<li>0: Well fed.</li>
+<li>1: A bit hungry.</li>
+<li>2: Becoming quite hungry.</li>
+<li>3: Very hungry.</li>
+<li>4: Fairly starving.</li>
+<li>5: Faint from lack of food.</li>
+</ul>
+<pre><code>cheat = freeze:G40:0
+</code></pre>
+<p>Alternatively, the bread that you find early in the game can be made perpetually available as follows:</p>
+<pre><code>cheat = freeze:0xf68:8
+</code></pre>
+<h4 id="thirst-1"><a class="header" href="#thirst-1">Thirst</a></h4>
+<p>The global variable <code>Ga5</code> tracks thirst.  It can take the following values:</p>
+<ul>
+<li>0: Well hydrated.</li>
+<li>1: A bit thirsty.</li>
+<li>2: Quite thirsty.</li>
+<li>3: Very thirsty.</li>
+<li>4: Extremely thirsty.</li>
+<li>5: Faint from lack of water.</li>
+</ul>
+<pre><code>cheat = freeze:Ga5:0
+</code></pre>
+<p>Alternatively, the jug of water that you find early in the game can be made perpetually full as follows:</p>
+<pre><code>cheat = freeze:0x1c09:4
+</code></pre>
+<h4 id="sleepiness-1"><a class="header" href="#sleepiness-1">Sleepiness</a></h4>
+<p>The global variable <code>G13</code> tracks sleepiness.  It can take the following values:</p>
+<ul>
+<li>65535: Wide awake.</li>
+<li>0: Beginning to tire.</li>
+<li>1: Feeling tired.</li>
+<li>2: Worn out.</li>
+<li>3: Wrung out and tired.</li>
+<li>4: Getting more and more tired.</li>
+<li>5: Dead on your feet.</li>
+<li>6: So tired you can barely put one foot in front of another.</li>
+<li>7: Practically asleep.</li>
+<li>8: Moving only on your last reserves of strength.</li>
+<li>9: Barely able to move your arms.</li>
+<li>10: Unable to keep your eyes open for more than a few moments at a time.</li>
+</ul>
+<pre><code>cheat = freeze:G13:65535
+</code></pre>
+<h4 id="notes"><a class="header" href="#notes">Notes</a></h4>
+<p><em>Enchanter</em> periodically reports how hungry and thirsty you are.  If you set the global variables indicating that you are fully sated, these periodic status reports will be gibberish (e.g. “cmhgfh   iseems gdon’t glk jmqcf” instead of “Your mouth is getting rather dry.”).  This is because the “print status” messages assume that the value will never be 0, and appears to be harmless.</p>
+<p>Similarly, if sleepiness is set to 65535, the message “You are faint from lack of water and the spells you’ve memorized are becoming confused.” will periodically appear.  This is, as above, the game not expecting the value 65535, and should be harmless.</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="sorcerer"><a class="header" href="#sorcerer">Sorcerer</a></h2>
+<p>These cheats are for <em>Sorcerer</em> version 15-851108.</p>
+<h4 id="thirst-2"><a class="header" href="#thirst-2">Thirst</a></h4>
+<p>The global variable <code>G4f</code> tracks thirst.  It can take the following values:</p>
+<ul>
+<li>0: Not thirsty.</li>
+<li>1: Somewhat thirsty.</li>
+<li>2: Quite thirsty.</li>
+<li>3: Very thirsty.</li>
+<li>4: Extremely thirsty.</li>
+<li>5: Incredibly thirsty.</li>
+<li>6: Dangerously thirsty.</li>
+</ul>
+<pre><code>cheat = freeze:G4f:0
+</code></pre>
+<h4 id="hunger-2"><a class="header" href="#hunger-2">Hunger</a></h4>
+<p>The global variable <code>G6c</code> tracks hunger.  It can take the following values:</p>
+<ul>
+<li>0: Not hungry.</li>
+<li>1: Somewhat hungry.</li>
+<li>2: Quite hungry.</li>
+<li>3: Very hungry.</li>
+<li>4: Extremely hungry.</li>
+<li>5: Incredibly hungry.</li>
+<li>6: Dangerously hungry.</li>
+</ul>
+<pre><code>cheat = freeze:G6c:0
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="spellbreaker"><a class="header" href="#spellbreaker">Spellbreaker</a></h2>
+<p>This cheat is for <em>Spellbreaker</em> version 87-860904.</p>
+<h4 id="sleepiness-2"><a class="header" href="#sleepiness-2">Sleepiness</a></h4>
+<p>The global variable <code>G0f</code> tracks sleepiness.  It can take the following values:</p>
+<ul>
+<li>65535: Wide awake.</li>
+<li>0: Beginning to tire.</li>
+<li>1: Feeling tired.</li>
+<li>2: Getting more and more tired.</li>
+<li>3: Worn out.</li>
+<li>4: Dead tired.</li>
+<li>5: So tired you can barely concentrate.</li>
+<li>6: Moving on your last reserves of strength.</li>
+<li>7: Practically asleep.</li>
+<li>8: Barely able to keep your eyes open.</li>
+<li>9: About to keel over from exhaustion.</li>
+</ul>
+<pre><code>cheat = freeze:G0f:0
+</code></pre>
+<h4 id="notes-1"><a class="header" href="#notes-1">Notes</a></h4>
+<p>As with Enchanter, <em>Spellbreaker</em> will periodically give status updates which are nonsensical if sleepiness is set to 65535 (e.g. “You are large bird circling the tower and eyeing you suspiciously..”).  These appear to be harmless.</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="planetfall"><a class="header" href="#planetfall">Planetfall</a></h2>
+<p>These cheats are for <em>Planetfall</em> version 37-851003.</p>
+<h4 id="hunger-and-thirst"><a class="header" href="#hunger-and-thirst">Hunger and thirst</a></h4>
+<p>The global variable <code>Gbc</code> tracks hunger and thirst.  It can take the following values:</p>
+<ul>
+<li>0: Well-fed.</li>
+<li>1, 2: Fairly thirsty and hungry.</li>
+<li>3, 4: Noticeably thirsty and hungry.</li>
+<li>5: Awesomely phenomenally thirsty and hungry.</li>
+</ul>
+<pre><code>cheat = freeze:Gbc:0
+</code></pre>
+<h4 id="sleepiness-3"><a class="header" href="#sleepiness-3">Sleepiness</a></h4>
+<p>The global variable <code>Gbe</code> tracks sleepiness.  It can take the following values:</p>
+<ul>
+<li>0: Well-rested.</li>
+<li>1: Sort of tired.</li>
+<li>2: Quite tired.</li>
+<li>3: Phenomenally tired.</li>
+</ul>
+<pre><code>cheat = freeze:Gbe:0
+</code></pre>
+<h4 id="health"><a class="header" href="#health">Health</a></h4>
+<p>The global variable <code>Gba</code> tracks health.  It can take the following values:</p>
+<ul>
+<li>0: Perfect health.</li>
+<li>1, 2, 3: A bit sick and feverish.</li>
+<li>4, 5: Somewhat sick and feverish.</li>
+<li>6, 7: Very sick and feverish.</li>
+<li>8: Severely sick and feverish.</li>
+</ul>
+<pre><code>cheat = freeze:Gba:0
+</code></pre>
+<h4 id="carrying-capacity"><a class="header" href="#carrying-capacity">Carrying capacity</a></h4>
+<p>The global variable <code>Gda</code> specifies the amount of weight that can be carried, while <code>G80</code> specifies the number of items.  Because these are treated as signed 16-bit values, 32767 is the maximum for each: larger values will be interpreted as negative numbers.</p>
+<pre><code>cheat = freeze:Gda:32000
+cheat = freeze:G80:32000
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="finding-cheats"><a class="header" href="#finding-cheats">Finding Cheats</a></h2>
+<p>Bocfel contains a few ways to help discover cheats in games. See <code>/debug help</code> for a complete list of debugging commands.</p>
+<h3 id="printing"><a class="header" href="#printing">Printing</a></h3>
+<p>The value of a word (16-bit value) at a particular address can be shown:</p>
+<pre><code>&gt;/debug print G00
+0 (0x0)
+</code></pre>
+<p>The value is printed in both signed decimal, and unsigned hexadecimal.</p>
+<h3 id="freezing"><a class="header" href="#freezing">Freezing</a></h3>
+<p>Cheating is implemented by freezing certain areas of memory such that they always report the same values. While this is not a method for <em>finding</em> cheats, once a cheat has been found, freezing is a way to test that cheat. Freezing can be done via Bocfel’s configuration file, or can be done in-game, to quickly test any cheats that you have found.</p>
+<p>Knowing that the score is kept in global variable <code>G01</code>, in <em>Zork</em>:</p>
+<pre><code>&gt;score
+Your score is 0 (total of 350 points), in 10 moves.
+This gives you the rank of Beginner.
+
+&gt;/debug freeze G01 350
+[Frozen]
+
+&gt;score
+Your score is 350 (total of 350 points), in 10 moves.
+This gives you the rank of Master Adventurer.
+</code></pre>
+<h3 id="watching"><a class="header" href="#watching">Watching</a></h3>
+<p>Addresses can be watched for changes. Knowing that the number of moves is kept in global variable <code>G02</code>, in <em>Zork</em>:</p>
+<pre><code>&gt;/debug watch G02
+[Watching G02 for changes]
+
+&gt;e
+The door is boarded and you can’t remove the boards.
+[G02 changed: 0 -&gt; 1 (pc = 0x54ec)]
+
+&gt;z
+Time passes...
+[G02 changed: 1 -&gt; 2 (pc = 0x54ec)]
+[G02 changed: 2 -&gt; 3 (pc = 0x54ec)]
+[G02 changed: 3 -&gt; 4 (pc = 0x54ec)]
+</code></pre>
+<h3 id="scanning"><a class="header" href="#scanning">Scanning</a></h3>
+<p>It is possible to scan memory for words (16-bit values) matching a specific value.  This can be used if you know the specific value of something and want to find it, such as the amount of money being carried.  The commands are:</p>
+<p><code>/debug scan start</code>: Restart scanning.  This forgets any previous scan that was in progress.</p>
+<p><code>/debug scan N</code>: Scan memory for the value <em>N</em>.  If <em>N</em> starts with <code>0x</code> it is hexadecimal and unsigned; otherwise it is decimal and can range from <code>-32768</code> to <code>65535</code>.  When this command is run, the number of memory locations which contain the specific value is printed.  If this command is run again, the list will be narrowed down.  This process can be repeated until, with luck, only a single memory location contains the specified value.</p>
+<p><code>/debug scan show</code>: Print out all locations matching the values that have been scanned for since the last scan start.</p>
+<p>For example, in <em>Beyond Zork</em>:</p>
+<pre><code>Kitchen
+  Coils of greasy steam rise from a cauldron bubbling over a roaring hearth. The ceiling is hung with crusty pots and strips of old meat.
+  A closed door in the corner bears the legend, &quot;Keepeth Out.&quot;
+  A skinny old cook is bustling around the kitchen.
+  There's a giant onion here.
+
+&gt;$
+You have 1 zorkmid.
+
+&gt;/debug scan start
+[Debug scan reset]
+
+&gt;/debug scan 1
+[183 locations]
+
+&gt;buy onion
+[with your zorkmid]
+  The cook gives you a bewildered look, shrugs, and accepts your zorkmid without question.
+
+&gt;$
+You're broke.
+
+&gt;/debug scan 0
+[1 location]
+
+&gt;/debug scan show
+Gd3
+
+&gt;/debug freeze Gd3 100
+[Frozen]
+
+&gt;$
+You have 100 zorkmids.
+</code></pre>
+<h3 id="changes"><a class="header" href="#changes">Changes</a></h3>
+<p>Sometimes you can be confident that a word (16-bit value) is increasing or decreasing, but not know the specific values being used, such as when a water or food source is being consumed.  The commands are:</p>
+<p><code>/debug change start</code>: Restart change tracking.  This forgets any previous change tracking that was in progress.</p>
+<p><code>/debug change dec</code>: Display the location of all words which have decreased since the last check.</p>
+<p><code>/debug change inc</code>: Display the location of all words which have increased since the last check.</p>
+<p>For example, in <em>Enchanter</em>, to determine how water is managed:</p>
+<pre><code>&gt;x jug
+The jug is empty.
+
+&gt;/debug change start
+[Debug change reset]
+
+&gt;fill jug
+The jug is now full of water.
+
+&gt;/debug change start
+
+&gt;sw then drink water
+Trailhead
+
+The delicious spring water tasted great, and there's lots more where that came from.
+
+&gt;/debug change dec
+0x60e: 14099 -&gt; -25325
+0x682: -16913 -&gt; -17097
+0x1c09: 4 -&gt; 3
+0x1c0a: 1065 -&gt; 809
+[...]
+
+&gt;ne then fill jug
+Shady Brook
+
+The jug is now full of water.
+
+&gt;/debug change inc
+0x60e: -25325 -&gt; 14099
+0x682: -17097 -&gt; -16913
+0x1c09: 3 -&gt; 4
+0x1c0a: 809 -&gt; 1065
+[...]
+
+&gt;sw then z.z.z then drink water
+Trail Head
+
+Time passes...
+[...]
+
+The delicious spring water tasted great, and there's lots more where that came from.
+
+&gt;/debug change dec
+0x60e: 14099 -&gt; -25325
+0x682: -16913 -&gt; -17097
+0x1c09: 4 -&gt; 3
+0x1c0a: 1065 -&gt; 809
+[...]
+
+&gt;z.z.z.z.z.z.z.z.z.z.z.z.z.z.z.
+Time passes...
+[...]
+
+&gt;drink water
+The delicious spring water tasted great, and there's plenty more.
+
+&gt;/debug change dec
+0x1c09: 3 -&gt; 2
+0x1c0a: 809 -&gt; 553
+
+&gt;ne then fill jug
+Shady Brook
+
+The jug is now full of water.
+
+&gt;/debug change inc
+0x1c09: 2 -&gt; 4
+0x1c0a: 553 -&gt; 1065
+</code></pre>
+<p>At this point it’s been narrowed down to two variables.  <code>0x1c09</code> looks promising because it keeps track in small increments, which keeps in line with how the water is managed in <em>Enchanter</em> (the jug being full, nearly full, half full, mostly empty, and empty).  To test, you can freeze the address at specific values and see what happens:</p>
+<pre><code>&gt;/debug freeze 0x1c09 4
+[Frozen]
+
+&gt;x jug
+The jug is full.
+
+&gt;/debug freeze 0x1c09 3
+[Frozen]
+
+&gt;x jug
+The jug is nearly full.
+
+&gt;/debug freeze 0x1c09 2
+[Frozen]
+
+&gt;x jug
+The jug is half full.
+
+&gt;/debug freeze 0x1c09 1
+[Frozen]
+
+&gt;x jug
+The jug is mostly empty.
+
+&gt;/debug freeze 0x1c09 0
+[Frozen]
+
+&gt;x jug
+The jug is foo
+</code></pre>
+<p>Looks like <code>0x1c09</code> tracks how much water is available.  Why is there odd output when the water is set to 0?  <em>Enchanter</em> handles water by having both a water object and a jug object.  When the jug is filled, the water object is placed into the jug.  The water object keeps track of how much water there is, with the values 4, 3, 2, and 1.  When the water object is at 1 and the player drinks that, instead of reducing the value to 0, the water object is removed entirely from the jug, and now instead of the <em>water</em> being in charge of determining how much water is left, the <em>jug</em> is in charge, and since it’s empty, it says so.  The upshot is that the game never expects the water object to be in the jug while at level 0: at that point, the water should be outside of the jug.  By freezing it at 0, the water stays in the jug but at an “impossible” value so far as the game is concerned.  It looks up what 0 means and finds a junk text string, which happens to be “foo”.</p>
+<p>These sorts of interactions can be tricky to deal with, because while it may seem that a single word tracks something, there may be more to it than that.  In this case, looking at the disassembly of the <em>Enchanter</em> game helps figure out how the water and jug interact, but it’s not really necessary to do so: it was enough to learn that freezing <code>0x1c09</code> at 4 keeps the jug perpetually full.</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="meta-commands"><a class="header" href="#meta-commands">Meta commands</a></h2>
+<p>Bocfel has so-called “meta commands”, which are operations that are handled by the interpreter itself rather than by the game.</p>
+<div style="break-before: page; page-break-before: always;"></div><p>The man page for Bocfel is <a href="./bocfel.html">available here</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="bocfel-downloads"><a class="header" href="#bocfel-downloads">Bocfel Downloads</a></h2>
+<p>The source code for Bocfel is provided here.</p>
+<p>Latest version: 2.1.2</p>
+<h3 id="bocfel-212"><a class="header" href="#bocfel-212">Bocfel 2.1.2</a></h3>
+<p><a href="downloads/bocfel-2.1.2.tar.gz">bocfel-2.1.2.tar.gz</a></p>
+<p>Release date: December 14, 2023</p>
+<p>Release notes:</p>
+<ul>
+<li>Small fixes for building with MSVC.</li>
+<li>New patches to fix missing text in Trinity and Beyond Zork.</li>
+</ul>
+<h3 id="bocfel-211"><a class="header" href="#bocfel-211">Bocfel 2.1.1</a></h3>
+<p><a href="downloads/bocfel-2.1.1.tar.gz">bocfel-2.1.1.tar.gz</a></p>
+<p>Release date: February 10, 2023</p>
+<p>Release notes:</p>
+<ul>
+<li>Various small bug fixes.</li>
+</ul>
+<h3 id="bocfel-21"><a class="header" href="#bocfel-21">Bocfel 2.1</a></h3>
+<p><a href="downloads/bocfel-2.1.tar.gz">bocfel-2.1.tar.gz</a></p>
+<p>Release date: January  7, 2023</p>
+<p>Release notes:</p>
+<ul>
+<li>Honor the loop chunk in Blorb sounds.</li>
+<li>Support bleeps under Gargoyle.</li>
+<li>Use separate channels for music and sound effects.</li>
+</ul>
+<h3 id="bocfel-201"><a class="header" href="#bocfel-201">Bocfel 2.0.1</a></h3>
+<p><a href="downloads/bocfel-2.0.1.tar.gz">bocfel-2.0.1.tar.gz</a></p>
+<p>Release date: November  3, 2022</p>
+<p>Release notes:</p>
+<ul>
+<li>Don’t patch Bureaucracy if timed input isn’t available.</li>
+<li>Properly set CXXFLAGS if ICU support is requested.</li>
+<li>Avoid a potential buffer overflow in memory I/O.</li>
+<li>Work around a bug in Inform’s “box” statement.</li>
+</ul>
+<h3 id="bocfel-20"><a class="header" href="#bocfel-20">Bocfel 2.0</a></h3>
+<p><a href="downloads/bocfel-2.0.tar.gz">bocfel-2.0.tar.gz</a></p>
+<p>Release date: February 16, 2022</p>
+<p>Release notes:</p>
+<ul>
+<li>Bocfel has been ported from C to C++. This should be transparent for users, but is the reason for the major version bump.</li>
+<li>ICU can be used to perform Unicode lowercasing.</li>
+</ul>
+<h3 id="bocfel-142"><a class="header" href="#bocfel-142">Bocfel 1.4.2</a></h3>
+<p><a href="downloads/bocfel-1.4.2.tar.gz">bocfel-1.4.2.tar.gz</a></p>
+<p>Release date: January 28, 2022</p>
+<p>Release notes:</p>
+<ul>
+<li>Support auxiliary files (see §7.6 of the Z-Machine Standards Document 1.1).</li>
+<li>Add a patch to properly support delays in <em>Bureaucracy</em>.</li>
+</ul>
+<h3 id="bocfel-141"><a class="header" href="#bocfel-141">Bocfel 1.4.1</a></h3>
+<p><a href="downloads/bocfel-1.4.1.tar.gz">bocfel-1.4.1.tar.gz</a></p>
+<p>Release date: December 30, 2021</p>
+<p>Release notes:</p>
+<ul>
+<li>Continue searching for Blorb files if the first one found is invalid.</li>
+<li>Allow patches to be set via the configuration file.</li>
+<li>A new <code>/config</code> meta command was added which allows users to edit the configuration file with their preferred text editor.</li>
+</ul>
+<h3 id="bocfel-14"><a class="header" href="#bocfel-14">Bocfel 1.4</a></h3>
+<p><a href="downloads/bocfel-1.4.tar.gz">bocfel-1.4.tar.gz</a></p>
+<p>Release date: October 19, 2021</p>
+<p>Release notes:</p>
+<ul>
+<li>A new <code>/notes</code> meta command was added which allows users to add arbitrary notes to game sessions; these notes are included in save files automatically so they are available across game sessions.</li>
+<li>A new persistent transcripting feature was added: if enabled, a transcript of every game session is automatically created and included in save files, so it is available across game sessions. This can be exported at any time.</li>
+<li>The status line for <em>Planetfall</em> and <em>Stationfall</em> now properly displays the time.</li>
+<li>Non-ASCII characters are again accepted in the Software License Application in <em>Bureaucracy</em>.</li>
+</ul>
+<h3 id="bocfel-132"><a class="header" href="#bocfel-132">Bocfel 1.3.2</a></h3>
+<p><a href="downloads/bocfel-1.3.2.tar.gz">bocfel-1.3.2.tar.gz</a></p>
+<p>Release date: April 16, 2021</p>
+<p>Release notes:</p>
+<ul>
+<li>Support queued sound effects as described in §9 of The Z-Machine Standards Document 1.1.</li>
+</ul>
+<h3 id="bocfel-131"><a class="header" href="#bocfel-131">Bocfel 1.3.1</a></h3>
+<p><a href="downloads/bocfel-1.3.1.tar.gz">bocfel-1.3.1.tar.gz</a></p>
+<p>Release date: April 15, 2021</p>
+<p>Release notes:</p>
+<ul>
+<li>Fix two sound bugs: fading in <em>Sherlock</em> works better now, and <em>The Lurking Horror</em> no longer crashes when playing some sounds.</li>
+<li>Add support for repeating sounds in <em>The Lurking Horror</em>.</li>
+</ul>
+<h3 id="bocfel-13"><a class="header" href="#bocfel-13">Bocfel 1.3</a></h3>
+<p><a href="downloads/bocfel-1.3.tar.gz">bocfel-1.3.tar.gz</a></p>
+<p>Release date: April 10, 2021</p>
+<p>Release notes:</p>
+<ul>
+<li>Add experimental autosave (disabled by default): Bocfel can now pick up where it left off after a previous shutdown.</li>
+<li>Add mouse support.</li>
+<li>Add support for the “routine” operand to <code>@sound_effect</code>.</li>
+<li>Add support for DOS (32-bit only at the moment).</li>
+<li>The XDG Base Directory Specification is now honored on Unix systems.</li>
+<li>Add more patches for <em>Beyond Zork</em> to improve its behavior if the interpreter is DOS or Apple II.</li>
+</ul>
+<h3 id="bocfel-121"><a class="header" href="#bocfel-121">Bocfel 1.2.1</a></h3>
+<p><a href="downloads/bocfel-1.2.1.tar.gz">bocfel-1.2.1.tar.gz</a></p>
+<p>Release date: January 31, 2021</p>
+<p>Release notes:</p>
+<ul>
+<li>Various small bug fixes.</li>
+</ul>
+<h3 id="bocfel-12"><a class="header" href="#bocfel-12">Bocfel 1.2</a></h3>
+<p><a href="downloads/bocfel-1.2.tar.gz">bocfel-1.2.tar.gz</a></p>
+<p>Release date: January 14, 2021</p>
+<p>Release notes:</p>
+<ul>
+<li>Rework meta saves to fix corner-case issues and improve screen management.</li>
+<li>Add history playback to save files to provide context on restore.</li>
+<li>Update <code>@set_font</code> handling to be in line with the latest standard revision.</li>
+<li>Several small fixes and updates (including but not limited to fixes for issues 384, 385, 395, and 399 at https://github.com/garglk/garglk/issues/).</li>
+</ul>
+<h3 id="bocfel-11"><a class="header" href="#bocfel-11">Bocfel 1.1</a></h3>
+<p><a href="downloads/bocfel-1.1.tar.gz">bocfel-1.1.tar.gz</a></p>
+<p>Release date: June 18, 2020</p>
+<p>Release notes:</p>
+<ul>
+<li>Support Blorb multimedia resources in non-Gargoyle Glk implementations.</li>
+<li>Fix two potential crashes discovered by American Fuzzy Lop.</li>
+<li>Improved terminal (non-Glk) support: Windows can now do colors and styles, and Unix now supports true color on terminals capable of it.</li>
+<li>Fix preloaded input in Beyond Zork.</li>
+</ul>
+<h3 id="bocfel-101"><a class="header" href="#bocfel-101">Bocfel 1.0.1</a></h3>
+<p><a href="downloads/bocfel-1.0.1.tar.gz">bocfel-1.0.1.tar.gz</a></p>
+<p>Release date: July 24, 2018</p>
+<p>Release notes:</p>
+<ul>
+<li>Ensure null termination of a string.</li>
+</ul>
+<h3 id="bocfel-10"><a class="header" href="#bocfel-10">Bocfel 1.0</a></h3>
+<p><a href="downloads/bocfel-1.0.tar.gz">bocfel-1.0.tar.gz</a></p>
+<p>Release date: December  6, 2017</p>
+<p>Release notes:</p>
+<ul>
+<li>Add the ability to patch known bugs in games at runtime.</li>
+<li>The username can now be set.</li>
+</ul>
+<h3 id="bocfel-09"><a class="header" href="#bocfel-09">Bocfel 0.9</a></h3>
+<p><a href="downloads/bocfel-0.9.tar.gz">bocfel-0.9.tar.gz</a></p>
+<p>Release date: March 19, 2017</p>
+<p>Release notes:</p>
+<ul>
+<li>UTF-8 is now used for all transcripts and command scripts.</li>
+<li>Watchpoints can now be set through the debugging interface.</li>
+<li>The upper window now tracks resizes properly even when it is closed.</li>
+</ul>
+<h3 id="bocfel-0632"><a class="header" href="#bocfel-0632">Bocfel 0.6.3.2</a></h3>
+<p><a href="downloads/bocfel-0.6.3.2.tar.gz">bocfel-0.6.3.2.tar.gz</a></p>
+<p>Release date: December 16, 2014</p>
+<p>Release notes:</p>
+<ul>
+<li>Fix detection of <em>Sherlock</em> version 26-880127.</li>
+</ul>
+<h3 id="bocfel-0631"><a class="header" href="#bocfel-0631">Bocfel 0.6.3.1</a></h3>
+<p><a href="downloads/bocfel-0.6.3.1.tar.gz">bocfel-0.6.3.1.tar.gz</a></p>
+<p>Release date: June 13, 2014</p>
+<p>Release notes:</p>
+<ul>
+<li>Fix a potential use of uninitialized variable.</li>
+</ul>
+<h3 id="bocfel-063"><a class="header" href="#bocfel-063">Bocfel 0.6.3</a></h3>
+<p><a href="downloads/bocfel-0.6.3.tar.gz">bocfel-0.6.3.tar.gz</a></p>
+<p>Release date: February  2, 2014</p>
+<p>Release notes:</p>
+<ul>
+<li>Improved handling of abbreviations (x, g, z, and o).</li>
+<li>The “attribute 48” bug of <em>Sherlock</em> is now properly handled.</li>
+<li>Blorb sounds are now properly loaded if the story file itself is wrapped in a Blorb file.</li>
+<li>Support for “debugging” meta commands, the main use of which is to help find cheats without needing to know details of the Z-machine architecture.</li>
+</ul>
+<h3 id="bocfel-062"><a class="header" href="#bocfel-062">Bocfel 0.6.2</a></h3>
+<p><a href="downloads/bocfel-0.6.2.tar.gz">bocfel-0.6.2.tar.gz</a></p>
+<p>Release date: December  1, 2012</p>
+<p>Release notes:</p>
+<ul>
+<li>Enable <code>/undo</code> in V5 games which do not support undo (e.g. <em>Hitchhiker’s Guide</em>).</li>
+<li>Add new meta commands <code>/say</code> (allowing text strings which begin with / to be sent to the game) and <code>/disable</code> (which disables meta commands for the rest of the game session).</li>
+<li>Add new meta commands <code>/ps</code> and <code>/pop</code> which allow in-memory saves to be created, providing arbitrary save points.</li>
+<li>Meta commands are no longer included in transcripts.</li>
+</ul>
+<h3 id="bocfel-061"><a class="header" href="#bocfel-061">Bocfel 0.6.1</a></h3>
+<p><a href="downloads/bocfel-0.6.1.tar.gz">bocfel-0.6.1.tar.gz</a></p>
+<p>Release date: February 27, 2012</p>
+<p>Release notes:</p>
+<ul>
+<li>Bocfel is now dual-licensed under both the GPLv2 and GPLv3.</li>
+<li>Small bugfixes and general cleanup.</li>
+</ul>
+<h3 id="bocfel-060"><a class="header" href="#bocfel-060">Bocfel 0.6.0</a></h3>
+<p><a href="downloads/bocfel-0.6.0.tar.gz">bocfel-0.6.0.tar.gz</a></p>
+<p>Release date: June 26, 2011</p>
+<p>Release notes:</p>
+<ul>
+<li>The configuration options <code>script_on</code> and <code>script_name</code> have been renamed to <code>record_on</code> and <code>record_name</code>.</li>
+<li>Support for some meta commands (<code>/undo</code>, <code>/replay</code>, etc.) has been added.</li>
+<li>Assorted minor bugfixes and features.</li>
+</ul>
+<h3 id="bocfel-055"><a class="header" href="#bocfel-055">Bocfel 0.5.5</a></h3>
+<p><a href="downloads/bocfel-0.5.5.tar.gz">bocfel-0.5.5.tar.gz</a></p>
+<p>Release date: April 22, 2011</p>
+<p>Release notes:</p>
+<ul>
+<li>Preliminary <code>@sound_effect</code> support.</li>
+<li>Small bugfixes and general cleanup.</li>
+</ul>
+<h3 id="bocfel-054"><a class="header" href="#bocfel-054">Bocfel 0.5.4</a></h3>
+<p><a href="downloads/bocfel-0.5.4.tar.gz">bocfel-0.5.4.tar.gz</a></p>
+<p>Release date: March 25, 2011</p>
+<p>Release notes:</p>
+<ul>
+<li>Fix a rather obscure bug triggered when <code>@restart</code> is called inside an interrupt.</li>
+<li>Improved resilience in the face of utterly broken story files.</li>
+<li>Minor improvements to the syntax for cheats.</li>
+<li>Improved handling of the configuration file on Windows.</li>
+</ul>
+<h3 id="bocfel-053"><a class="header" href="#bocfel-053">Bocfel 0.5.3</a></h3>
+<p><a href="downloads/bocfel-0.5.3.tar.gz">bocfel-0.5.3.tar.gz</a></p>
+<p>Release date: March  9, 2011</p>
+<p>Release notes:</p>
+<ul>
+<li>The initial random seed can now be read from a device such as <code>/dev/random</code>.</li>
+<li>Support for Z-machine versions 1 and 2 is now built unconditionally.</li>
+<li>Small bugfixes and general cleanup.</li>
+</ul>
+<h3 id="bocfel-052"><a class="header" href="#bocfel-052">Bocfel 0.5.2</a></h3>
+<p><a href="downloads/bocfel-0.5.2.tar.gz">bocfel-0.5.2.tar.gz</a></p>
+<p>Release date: February 22, 2011</p>
+<p>Release notes:</p>
+<ul>
+<li>Fix a display problem when a newline is printed at the right edge of the upper window.</li>
+<li>Provide better diagnostics when a save file cannot be loaded.</li>
+</ul>
+<h3 id="bocfel-051"><a class="header" href="#bocfel-051">Bocfel 0.5.1</a></h3>
+<p><a href="downloads/bocfel-0.5.1.tar.gz">bocfel-0.5.1.tar.gz</a></p>
+<p>Release date: February 18, 2011</p>
+<p>Release notes:</p>
+<ul>
+<li>Bocfel now reports itself as a Standard 1.1-compliant interpreter.</li>
+<li>The stack is now properly saved in a <code>@save_undo</code> call.</li>
+<li>Bocfel generates error messages on a few rather questionable uses of the Z-machine; some of these instances have been modified to return sensible results instead of aborting.</li>
+<li>The praxix and strictz tests are now passed.</li>
+</ul>
+<h3 id="bocfel-050"><a class="header" href="#bocfel-050">Bocfel 0.5.0</a></h3>
+<p><a href="downloads/bocfel-0.5.0.tar.gz">bocfel-0.5.0.tar.gz</a></p>
+<p>Release date: February 15, 2011</p>
+<p>Release notes:</p>
+<ul>
+<li>Initial release.</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>

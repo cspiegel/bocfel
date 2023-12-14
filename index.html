@@ -1,0 +1,264 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Overview - Bocfel</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "ayu";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html" class="active"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="cheating.html"><strong aria-hidden="true">2.</strong> Cheating</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cheats.html"><strong aria-hidden="true">2.1.</strong> Cheats</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="infocom13.html"><strong aria-hidden="true">2.1.1.</strong> Infocom version 1-3 games</a></li><li class="chapter-item expanded "><a href="cutthroads.html"><strong aria-hidden="true">2.1.2.</strong> Cutthroats</a></li><li class="chapter-item expanded "><a href="enchanter.html"><strong aria-hidden="true">2.1.3.</strong> Enchanter</a></li><li class="chapter-item expanded "><a href="sorcerer.html"><strong aria-hidden="true">2.1.4.</strong> Sorcerer</a></li><li class="chapter-item expanded "><a href="spellbreaker.html"><strong aria-hidden="true">2.1.5.</strong> Spellbreaker</a></li><li class="chapter-item expanded "><a href="planetfall.html"><strong aria-hidden="true">2.1.6.</strong> Planetfall</a></li></ol></li><li class="chapter-item expanded "><a href="finding_cheats.html"><strong aria-hidden="true">2.2.</strong> Finding cheats</a></li></ol></li><li class="chapter-item expanded "><a href="meta.html"><strong aria-hidden="true">3.</strong> Meta commands</a></li><li class="chapter-item expanded "><a href="man.html"><strong aria-hidden="true">4.</strong> Man page</a></li><li class="chapter-item expanded "><a href="downloads.html"><strong aria-hidden="true">5.</strong> Downloads</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Bocfel</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="bocfel-z-machine-interpreter"><a class="header" href="#bocfel-z-machine-interpreter">Bocfel Z-machine interpreter</a></h2>
+<h3 id="overview"><a class="header" href="#overview">Overview</a></h3>
+<p>Bocfel is an interpreter for the <a href="http://en.wikipedia.org/wiki/Z-machine">Z-machine</a>. It fully supports versions 1-5, 7, and 8, and contains partial support for version 6. For detailed information on Bocfel’s operation, please consult the <a href="bocfel.html">man page</a>.</p>
+<p>Bocfel can be downloaded from the <a href="downloads.html">downloads page</a>.</p>
+<h3 id="the-z-machine"><a class="header" href="#the-z-machine">The Z-machine</a></h3>
+<p>The Z-machine was designed to run text adventure games, also known as interactive fiction. Originally the only Z-machine games were created by Infocom, the company that created the Z-machine. These include such games as Zork, The Hitchhiker’s Guide to the Galaxy, and Planetfall. Fans of the genre figured out the format of the Z-machine, allowing non-Infocom interpreters, such as this one, to be built.</p>
+<p>After that, a compiler for the Z-machine, called Inform, was released. Initially a language meant for programmers, the latest iteration of Inform is intended to allow non-programmers to easily write interactive fiction. Thanks to Inform, hundreds of Z-machine story files have been written by enthusiasts, a number of which are of extremely high quality.</p>
+<p>Although interactive fiction is today a rather niche genre, it has a loyal following of both players and authors, and can be explored through the following resources, among others:</p>
+<ul>
+<li><a href="http://ifdb.tads.org/">The Interactive Fiction Database</a></li>
+<li><a href="http://www.ifwiki.org/">IFWiki</a></li>
+<li><a href="http://www.ifcomp.org/">Annual Interactive Fiction Competition</a></li>
+<li><a href="http://xyzzyawards.org/">XYZZY Awards</a></li>
+<li><a href="http://www.intfiction.org/forum/">The Interactive Fiction Community Forum</a></li>
+<li>The newsgroups <a href="news:rec.arts.int-fiction">rec.arts.int-fiction</a> and <a href="news:rec.games.int-fiction">rec.games.int-fiction</a></li>
+</ul>
+<h3 id="screenshots"><a class="header" href="#screenshots">Screenshots</a></h3>
+<ul>
+<li><a href="screenshots/bd_curses.png">Beyond Zork</a> running under <a href="http://www.eblong.com/zarf/glk/">glktermw</a>.</li>
+<li><a href="screenshots/bomber_garglk.png">The Mad Bomber</a> running under <a href="https://github.com/garglk/garglk">garglk</a>.</li>
+<li><a href="screenshots/etude_none.png">TerpEtude</a> running under the “dumb” interface which, despite its name, understands a bit about Unix terminals.</li>
+<li><a href="screenshots/mingsheng_garglk.png">Mingsheng</a> running under garglk, showing off Unicode support.</li>
+<li><a href="screenshots/plundered_qglk.png">Plundered Hearts</a> running under <a href="https://gitlab.com/lacc97/qglk">QGlk</a>.</li>
+<li><a href="screenshots/tangler_garglk.png">Spider and Web</a> Russian translation running under garglk, also showing off Unicode.</li>
+<li><a href="screenshots/zork_winglk.png">Zork</a> running under <a href="http://www.ifarchive.org/indexes/if-archiveXprogrammingXglkXimplementations.html">Windows Glk</a>.</li>
+<li><a href="screenshots/dreamhold_nanoglk.png">The Dreamhold</a> running under <a href="http://www.ifarchive.org/indexes/if-archiveXprogrammingXglkXimplementations.html">NanoGlk</a>.</li>
+<li><a href="screenshots/jigsaw_fabularium.png">Jigsaw</a> running under <a href="https://play.google.com/store/apps/details?id=com.luxlunae.fabularium&amp;hl=en_US">Fabularium</a>.</li>
+<li><a href="screenshots/anchorhead_remglk.png">Anchorhead</a> running under <a href="http://www.eblong.com/zarf/glk/">GlkOte and RemGlk</a>.</li>
+<li><a href="screenshots/hitchhiker_glkdos.png">The Hitchhiker’s Guide to the Galaxy</a> running under <a href="https://www.ifarchive.org/indexes/if-archiveXprogrammingXglkXimplementations.html">GlkDOS</a>.</li>
+</ul>
+<h3 id="some-of-bocfels-features"><a class="header" href="#some-of-bocfels-features">Some of Bocfel’s features</a></h3>
+<ul>
+<li>Almost no platform-specific functions are used—and those that are used are optional—so almost any system with a recent C compiler should be able to build and run Bocfel.</li>
+<li>Makes use of <a href="http://eblong.com/zarf/glk/">Glk</a> for input/ouput, with complete support for <a href="https://github.com/garglk/garglk">Gargoyle</a>; a non-Glk “dumb” interface is also available.</li>
+<li>Support (assuming a font with Unicode box-drawing characters) for the character graphics font used by Beyond Zork.</li>
+<li>Unicode support: see, for example, Chinese characters used by <a href="http://ifdb.tads.org/viewgame?id=wjkg89918ttdbkm2">Mingsheng</a> or the Russian translation of <a href="http://ifdb.tads.org/viewgame?id=2xyccw3pe0uovfad">Spider and Web</a>.</li>
+<li>Multiple undo in almost all games, including those which do not natively support it.</li>
+<li>Full control over command recording, transcripting, and command-record playback.</li>
+<li>Rudimentary “<a href="cheating.html">cheating</a>” support, designed to disable hunger and thirst daemons.</li>
+</ul>
+<p>Only the source code to Bocfel is provided here. If you are interested in a runnable binary, Ben Cressey has integrated Bocfel into the latest version of <a href="https://github.com/garglk/garglk">Gargoyle</a> as the default Z-machine interpreter.</p>
+<h3 id="bugs"><a class="header" href="#bugs">Bugs</a></h3>
+<p>Please report bugs to <a href="https://github.com/garglk/garglk/issues">Gargoyle’s issue tracker</a>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+                            <a rel="next prefetch" href="cheating.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+                    <a rel="next prefetch" href="cheating.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

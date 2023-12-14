@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="mandoc.css" type="text/css" media="all"/>
+  <title>BOCFEL(6)</title>
+</head>
+<body>
+<table class="head">
+  <tr>
+    <td class="head-ltitle">BOCFEL(6)</td>
+    <td class="head-vol">Games Manual</td>
+    <td class="head-rtitle">BOCFEL(6)</td>
+  </tr>
+</table>
+<div class="manual-text">
+<section class="Sh">
+<h1 class="Sh" id="NAME"><a class="permalink" href="#NAME">NAME</a></h1>
+<p class="Pp"><code class="Nm">bocfel</code> &#x2014; <span class="Nd">Z-machine
+    interpreter
+    &#x27E8;<a class="Lk" href="https://bocfel.org/">https://bocfel.org/</a>&#x27E9;</span></p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="SYNOPSIS"><a class="permalink" href="#SYNOPSIS">SYNOPSIS</a></h1>
+<table class="Nm">
+  <tr>
+    <td><code class="Nm">bocfel</code></td>
+    <td>[<code class="Fl">-cCdDefFgGhHkmprstxXyY</code>]
+      [<code class="Fl">-a</code> <var class="Ar">eval_stack_size</var>]
+      [<code class="Fl">-A</code> <var class="Ar">call_stack_size</var>]
+      [<code class="Fl">-E</code> <var class="Ar">escape_string</var>]
+      [<code class="Fl">-l</code> <var class="Ar">username</var>]
+      [<code class="Fl">-n</code> <var class="Ar">number</var>]
+      [<code class="Fl">-N</code> <var class="Ar">version</var>]
+      [<code class="Fl">-R</code> <var class="Ar">replay_filename</var>]
+      [<code class="Fl">-S</code> <var class="Ar">record_filename</var>]
+      [<code class="Fl">-T</code> <var class="Ar">transcript_filename</var>]
+      [<code class="Fl">-u</code> <var class="Ar">slots</var>]
+      [<code class="Fl">-z</code> <var class="Ar">seed</var>]
+      [<code class="Fl">-Z</code> <var class="Ar">device</var>]
+      <var class="Ar">file</var></td>
+  </tr>
+</table>
+<br/>
+<table class="Nm">
+  <tr>
+    <td><code class="Nm">bocfel</code></td>
+    <td><code class="Fl">-i</code> <var class="Ar">file</var></td>
+  </tr>
+</table>
+<br/>
+<table class="Nm">
+  <tr>
+    <td><code class="Nm">bocfel</code></td>
+    <td><code class="Fl">-v</code></td>
+  </tr>
+</table>
+</section>
+<h1 class="Sh">TABLE OF CONTENTS</h1>
+<ul class="Bl-compact">
+  <li><a href="#DESCRIPTION">DESCRIPTION</a></li>
+  <li><a href="#CONFIGURATION_FILE">CONFIGURATION FILE</a></li>
+  <li><a href="#STYLES">STYLES</a></li>
+  <li><a href="#CHARACTER_GRAPHICS_FONT">CHARACTER GRAPHICS FONT</a></li>
+  <li><a href="#META_COMMANDS">META COMMANDS</a></li>
+  <li><a href="#META_DEBUG_COMMANDS">META DEBUG COMMANDS</a></li>
+  <li><a href="#SOUND_EFFECTS">SOUND EFFECTS</a></li>
+  <li><a href="#CHEATING">CHEATING</a></li>
+  <li><a href="#AUXILIARY_FILES">AUXILIARY FILES</a></li>
+  <li><a href="#STANDARDS">STANDARDS</a></li>
+  <li><a href="#AUTHORS">AUTHORS</a></li>
+</ul>
+<section class="Sh">
+<h1 class="Sh" id="DESCRIPTION"><a class="permalink" href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p class="Pp"><code class="Nm">bocfel</code> is a Z-machine interpreter. It
+    fully supports versions 1-5, 7, and 8 of the Z-machine, with extremely
+    limited support for version 6. It can read stories stored in Blorb files,
+    but has no support for associated graphics, if any exist.</p>
+<p class="Pp">The following options are available:</p>
+<dl class="Bl-tag">
+  <dt id="a"><a class="permalink" href="#a"><code class="Fl">-a</code></a>
+    <var class="Ar">eval_stack_size</var></dt>
+  <dd>The Z-machine contains an evaluation stack which games use as a sort of
+      scratch space when performing calculations. By default the size of this
+      stack is set at 16384, which should be sufficient for any game. The entire
+      stack is allocated at once, so if you are on a system with a small amount
+      of memory, setting this to a smaller value will cause less memory to be
+      allocated.
+    <p class="Pp">The maximum value is limited only by system memory. Each
+        evaluation stack entry takes two bytes. If you ever encounter a
+        &#x201C;stack overflow&#x201D; message with the default size, please let
+        me know.</p>
+  </dd>
+  <dt id="A"><a class="permalink" href="#A"><code class="Fl">-A</code></a>
+    <var class="Ar">call_stack_size</var></dt>
+  <dd>The Z-machine allows games to call routines in order to get work done;
+      these routines can call other routines, and so on. Information about these
+      routines is placed onto the call stack, which by default has a size of
+      1024. This means that no more than 1024 routines can be active at any
+      single time. This value should be much more than sufficient for any game.
+      As with the evaluation stack, memory for the call stack is allocated at
+      one time, so machines with small amounts of memory can reduce this value
+      to reduce memory consumption.
+    <p class="Pp">The maximum value allowable by the Z-machine is 65535. Each
+        call stack entry takes between 40 and 50 bytes.</p>
+  </dd>
+  <dt id="c"><a class="permalink" href="#c"><code class="Fl">-c</code></a></dt>
+  <dd>If the Glk implementation being used is Gargoyle, or if Glk is not being
+      used at all, support for colors is provided. This option disables color
+      support entirely.</dd>
+  <dt id="C"><a class="permalink" href="#C"><code class="Fl">-C</code></a></dt>
+  <dd>Do not read the configuration file. Settings in the configuration file
+      take precedence over those specified on the command line, so if you want
+      to override the configuration file, use this option.</dd>
+  <dt id="d"><a class="permalink" href="#d"><code class="Fl">-d</code></a></dt>
+  <dd>Many Glk implementations allow timed input as used by games such as
+      <a class="permalink" href="#Border"><i class="Em" id="Border">Border
+      Zone</i></a>. This option disables timed input and informs games that
+      timed input is not available.</dd>
+  <dt id="D"><a class="permalink" href="#D"><code class="Fl">-D</code></a></dt>
+  <dd>If Gargoyle is being used, sound effects are supported. This option
+      disables sound effects and informs games that sound effects are not
+      available.</dd>
+  <dt id="e"><a class="permalink" href="#e"><code class="Fl">-e</code></a></dt>
+  <dd>Turn on ANSI escapes in the transcript. If this option is enabled, all
+      user input in the transcript can be decorated with ANSI escape sequences
+      so it stands out. See the <code class="Fl">-E</code> option.</dd>
+  <dt id="E"><a class="permalink" href="#E"><code class="Fl">-E</code></a>
+    <var class="Ar">escape_string</var></dt>
+  <dd>If the <code class="Fl">-e</code> option is used, this sets the escape
+      string that will be used when highlighting user input in the transcript.
+      ^[[ is written, then <var class="Ar">escape_string</var>, then ^[[0m. By
+      default &#x201C;1m&#x201D; is used as the escape string, providing bold
+      text.</dd>
+  <dt id="f"><a class="permalink" href="#f"><code class="Fl">-f</code></a></dt>
+  <dd>Many Glk implementations allow a fixed-width font to be selected. This
+      option disables fixed-width fonts and informs games that fixed-width fonts
+      are not available. The game might still be displayed using a fixed-width
+      font (e.g. if you are playing in a terminal), but the game has no way of
+      knowing this.</dd>
+  <dt id="F"><a class="permalink" href="#F"><code class="Fl">-F</code></a></dt>
+  <dd>Glk does not allow the mixing of text styles, so it is not possible to
+      request, for example, both fixed-width and reverse video. If both styles
+      are requested, fixed-width takes precedence. However, if
+      <code class="Nm">bocfel</code> is being run in a terminal (with, for
+      example, the glktermw Glk implementation), the font will be fixed at all
+      times. The <code class="Fl">-F</code> flag tells
+      <code class="Nm">bocfel</code> to assume that the current font is always
+      fixed, allowing other styles to be applied simultaneously. See the puzzle
+      pieces in Graham Nelson's
+      <a class="permalink" href="#Jigsaw"><i class="Em" id="Jigsaw">Jigsaw</i></a>
+      for an example of how this can be useful.
+    <p class="Pp">See also the <a class="Sx" href="#STYLES">STYLES</a> section.
+        Note that Gargoyle does allow the mixing of styles, so this option does
+        nothing under Gargoyle.</p>
+  </dd>
+  <dt id="g"><a class="permalink" href="#g"><code class="Fl">-g</code></a></dt>
+  <dd>Disable the character graphics font. See the
+      <a class="Sx" href="#CHARACTER_GRAPHICS_FONT">CHARACTER GRAPHICS FONT</a>
+      section below.</dd>
+  <dt id="G"><a class="permalink" href="#G"><code class="Fl">-G</code></a></dt>
+  <dd>Select an alternative style of box drawing characters.
+    <p class="Pp">Most characters in the graphics font map fairly well to
+        Unicode equivalents, but a few box drawing characters do not. Two
+        methods for drawing the missing characters are provided, each with pros
+        and cons. A description of the differences is not sufficient, so it is
+        recommended that you try <i class="Em">Beyond Zork</i> both with and
+        without this option, paying attention to the map connections. See also
+        the <a class="Sx" href="#CHARACTER_GRAPHICS_FONT">CHARACTER GRAPHICS
+        FONT</a> section below.</p>
+  </dd>
+  <dt id="h"><a class="permalink" href="#h"><code class="Fl">-h</code></a></dt>
+  <dd>Display a short help message then exit.</dd>
+  <dt id="H"><a class="permalink" href="#H"><code class="Fl">-H</code></a></dt>
+  <dd>Disable save history playback. When saving, <code class="Nm">bocfel</code>
+      includes a snapshot of the screen state (more or less) in order to play it
+      back on restore to provide context as to what was happening before the
+      game was saved. This flag disables playback of history. Note that history
+      will still be stored on save even when this option is selected; it just
+      won't be played back on restore.</dd>
+  <dt id="i"><a class="permalink" href="#i"><code class="Fl">-i</code></a></dt>
+  <dd>Print out the ID of the specified game and exit. This ID is used to
+      uniquely identify a game and is adapted from the Treaty of Babel standard.
+      Game IDs can be used in the configuration file to set options for specific
+      games. See the <a class="Sx" href="#CONFIGURATION_FILE">CONFIGURATION
+      FILE</a> section for more information.</dd>
+  <dt id="k"><a class="permalink" href="#k"><code class="Fl">-k</code></a></dt>
+  <dd>The Z-machine has a concept of &#x201C;terminating keys&#x201D;. When
+      enabled, these keys, in addition to Enter, terminate input immedately.
+      <i class="Em">Beyond Zork</i>, for example, uses this so that F1
+      automatically executes &#x201C;look around&#x201D;, F2 does
+      &#x201C;inventory&#x201D;, and so on. However, <i class="Em">Beyond
+      Zork</i> also claims the up arrow, which means that history browsing, in
+      Glk implementations that support it, might not be able to be initiated
+      with the up arrow. This option disables the use of terminating keys. Note
+      that not all Glk implementations support terminating keys.</dd>
+  <dt id="l"><a class="permalink" href="#l"><code class="Fl">-l</code></a>
+    <var class="Ar">username</var></dt>
+  <dd>Set the username by writing up to 8 bytes to the location
+      <a class="permalink" href="#0x38"><b class="Sy" id="0x38">0x38</b></a> in
+      the story file. This is not officially part of the Z-machine, but is at
+      least used by
+      <a class="permalink" href="#Hollywood"><i class="Em" id="Hollywood">Hollywood
+      Hijinx</i></a>, where a username starting with either &#x201C;DA&#x201D;
+      or &#x201C;TOMAS&#x201D; enables the debugging command &#x201C;flush
+      33&#x201D; which moves you to a junction room which leads to various other
+      locations, allowing puzzles to be bypassed.</dd>
+  <dt id="m"><a class="permalink" href="#m"><code class="Fl">-m</code></a></dt>
+  <dd>Disable meta commands. See <a class="Sx" href="#META_COMMANDS">META
+      COMMANDS</a> below for more information.</dd>
+  <dt id="n"><a class="permalink" href="#n"><code class="Fl">-n</code></a>
+    <var class="Ar">number</var></dt>
+  <dd>Z-machine interpreters are able to inform games what platform they are
+      running on by setting an interpreter number in the range 1 to 11. The
+      following are the valid values (taken from Graham Nelson's
+      <i class="Em">Z-Machine Standards Document</i> 1.1):
+    <p class="Pp"></p>
+    <ol class="Bl-enum Bd-indent Bl-compact">
+      <li>DECSystem-20</li>
+      <li>Apple IIe</li>
+      <li>Macintosh</li>
+      <li>Amiga</li>
+      <li>Atari ST</li>
+      <li>IBM PC</li>
+      <li>Commodore 128</li>
+      <li>Commodore 64</li>
+      <li>Apple IIc</li>
+      <li>Apple IIgs</li>
+      <li>Tandy Color</li>
+    </ol>
+    <p class="Pp" id="Trinity">By and large this value is meaningless. Some
+        Infocom games do make small use of this information:
+        <a class="permalink" href="#Trinity"><i class="Em">Trinity</i></a>, for
+        example, has a &#x201C;print emphasized&#x201D; routine that is used to
+        print emphasized (which generally means italicized) text; on any machine
+        but the Atari, however, this routine makes sure not to print punctuation
+        in italics. <i class="Em">Beyond Zork</i> makes what is probably the
+        most visible use of the interpreter number, using it to decide how to
+        deal with character graphics. See section 16 of the
+        <i class="Em">Z-Machine Standards Document</i> 1.1 for more information.
+        By default, the interpreter version is set to 1 becuase this causes
+        <i class="Em">Beyond Zork</i> to prompt the user about the machine he is
+        using, allowing him to select whether or not character graphics are
+        used.</p>
+    <p class="Pp">I do not recommend setting this to 11. At least
+        <i class="Em">Beyond Zork</i> assumes that the largest it will be is 10,
+        and setting it to 11 can cause an out-of-bounds memory access. The
+        instance I have seen of this is not fatal, but there may be other
+        instances that are.</p>
+  </dd>
+  <dt id="N"><a class="permalink" href="#N"><code class="Fl">-N</code></a>
+    <var class="Ar">version</var></dt>
+  <dd>Even more meaningless than the interpreter number is the interpreter
+      version. This, as far as has been determined, is never used except when
+      the user asks a game to either report its version or to verify its disk
+      image. In these cases, the version is simply printed out, nothing more.
+      This is a single character and there is no real reason to change it. The
+      default is C.</dd>
+  <dt id="p"><a class="permalink" href="#p"><code class="Fl">-p</code></a></dt>
+  <dd><code class="Nm">bocfel</code> includes patches to work around some known
+      bugs in games. This flag disables such patches.</dd>
+  <dt id="r"><a class="permalink" href="#r"><code class="Fl">-r</code></a></dt>
+  <dd>Play back a command record (see <code class="Fl">-s</code>) as soon as the
+      game begins. Some games provide a way to play back a record (typically
+      through the REPLAY verb in Inform-based games, and #comm in some Infocom
+      games), but this option is useful to start playback before you have an
+      opportunity to call REPLAY, or if the game provides no way to play back
+      such a record.
+    <p class="Pp">Command records must be UTF-8.</p>
+    <p class="Pp">See also the <a class="Sx" href="#META_COMMANDS">META
+        COMMANDS</a> section.</p>
+  </dd>
+  <dt id="R"><a class="permalink" href="#R"><code class="Fl">-R</code></a>
+    <var class="Ar">replay_filename</var></dt>
+  <dd>When command-record playback is enabled, you will be prompted for a
+      filename. This prompt can be bypassed by providing a filename here.</dd>
+  <dt id="s"><a class="permalink" href="#s"><code class="Fl">-s</code></a></dt>
+  <dd>Turn on command recording. This records every keystroke the player makes,
+      and (hopefully) creates a record that is suitable for playback either by
+      using <code class="Fl">-r</code> or through a game command. Some games
+      provide this functionality themselves (typically through the RECORDING
+      verb in Inform-based games, and #reco in some Infocom games), but this
+      option is useful to start recording before you have an opportunity to call
+      RECORDING, or if the game provides no way to start such a record.
+    <p class="Pp">Command records are always written in UTF-8.</p>
+    <p class="Pp">See also the <a class="Sx" href="#META_COMMANDS">META
+        COMMANDS</a> section.</p>
+  </dd>
+  <dt id="S"><a class="permalink" href="#S"><code class="Fl">-S</code></a>
+    <var class="Ar">record_filename</var></dt>
+  <dd>When command recording is enabled, you will be prompted for a filename.
+      This prompt can be bypassed by providing a filename here.</dd>
+  <dt id="t"><a class="permalink" href="#t"><code class="Fl">-t</code></a></dt>
+  <dd>Turn on transcripting. This records both the output of the game and user
+      input. If the chosen transcript file exists, it will be appended to, not
+      overwritten. This way you can easily continue a transcript every time you
+      come back to a game.
+    <p class="Pp">Transcripts are always written in UTF-8.</p>
+    <p class="Pp">See also the <code class="Fl">-y</code> option and the
+        <a class="Sx" href="#META_COMMANDS">META COMMANDS</a> section.</p>
+  </dd>
+  <dt id="T"><a class="permalink" href="#T"><code class="Fl">-T</code></a>
+    <var class="Ar">transcript_filename</var></dt>
+  <dd>When transcripting is enabled, you will be prompted for a filename. This
+      prompt can be bypassed by providing a filename here.</dd>
+  <dt id="u"><a class="permalink" href="#u"><code class="Fl">-u</code></a>
+    <var class="Ar">slots</var></dt>
+  <dd>Some games provide the ability to undo a turn. In fact, some games allow
+      multiple turns to be undone. This option controls how many save slots are
+      available. Unlike the stacks (see <code class="Fl">-a</code> and
+      <code class="Fl">-A</code>), save slots are dynamic, meaning that unless a
+      game provides support for undo, no memory will be used. However, games
+      that do support undo will typically take a snapshot each turn, causing
+      memory to be allocated. The size of each snapshot depends on the game and
+      the current state of play. Memory usage is minimized as much as possible:
+      at the beginning of <i class="Em">Anchorhead</i>, for example, each slot
+      takes up roughly 900 bytes. As the game progresses, though, the size of a
+      save slot inevitably will increase: near the end of
+      <i class="Em">Anchorhead</i>, my save slots were taking up roughly 4500
+      bytes.
+    <p class="Pp" id="Sherlock">Note that Inform-based games (at least by
+        default) do not support multiple undo; two non-V6 Infocom games, to my
+        knowledge, do:
+        <a class="permalink" href="#Sherlock"><i class="Em">Sherlock</i></a> and
+        <i class="Em">Beyond Zork</i>. However, <code class="Nm">bocfel</code>
+        includes the ability to perform multiple undo regardless of whether the
+        game provides support for it. See the
+        <a class="Sx" href="#META_COMMANDS">META COMMANDS</a> section for more
+        information.</p>
+    <p class="Pp">The default value is 100. A value of zero disables undo.</p>
+  </dd>
+  <dt id="v"><a class="permalink" href="#v"><code class="Fl">-v</code></a></dt>
+  <dd>Display version information and show which compile-time options are
+    set.</dd>
+  <dt id="x"><a class="permalink" href="#x"><code class="Fl">-x</code></a></dt>
+  <dd>Many games include abbreviations for commonly-used commands: x for
+      EXAMINE, g for AGAIN, z for WAIT, and o for OOPS. Some early Infocom
+      games, however, do not provide these. For these Infocom games, x, g, z,
+      and o are mapped to their respective commands, providing convenient
+      shortcuts for games that don't provide them. If a game requires one of
+      these letters for its own use, these abbreviations can be turned off with
+      <code class="Fl">-x</code>.</dd>
+  <dt id="X"><a class="permalink" href="#X"><code class="Fl">-X</code></a></dt>
+  <dd>Enable the Tandy, or censorship flag. This flag is generally unused, but
+      it does change some language in <i class="Em">The Witness</i> which was,
+      apparently, offensive to the Tandy Corporation. Some other games add a
+      note regarding licensing to Tandy, but apart from this, it is apparently
+      unused by Infocom.</dd>
+  <dt id="y"><a class="permalink" href="#y"><code class="Fl">-y</code></a></dt>
+  <dd>When transcripting is turned on and an existing file is selected, that
+      file is appended to rather than overwritten. This option causes the file
+      to be overwritten.</dd>
+  <dt id="Y"><a class="permalink" href="#Y"><code class="Fl">-Y</code></a></dt>
+  <dd>In almost all games, either the game's UNDO command or the
+      <b class="Sy">/undo</b> meta command will work. However, if you encounter
+      a game where undo appears broken, try using this option. It will instruct
+      <code class="Nm">bocfel</code> to ignore the game's undo code, instead
+      using only its own undo handling. This might work if the game's undo
+      handling is subpar, either by design or by accident. Note that if this
+      option is active, <b class="Sy">/undo</b> must be used instead of the
+      game's UNDO command.</dd>
+  <dt id="z"><a class="permalink" href="#z"><code class="Fl">-z</code></a>
+    <var class="Ar">seed</var></dt>
+  <dd>Provide a seed to the pseudo-random number generator, causing it to yield
+      predictable values. This option is probably only of use to game authors
+      who are doing testing. The generator will be reseeded with this value
+      whenever the @random opcode is called with a 0 operand or when the
+      @restart opcode is called. The <code class="Fl">-Z</code> option overrides
+      this option.</dd>
+  <dt id="Z"><a class="permalink" href="#Z"><code class="Fl">-Z</code></a>
+    <var class="Ar">device</var></dt>
+  <dd>Provide a device from which random numbers are read for the @random
+      opcode. This is meant to be used with special files such as
+      <span class="Pa">/dev/urandom</span>, although it can be used with any
+      file. If a read error occurs or end-of-file is reached,
+      <code class="Nm">bocfel</code> will switch to using a pseudo-random number
+      generator. If the game is put into predictable mode via a negative operand
+      to @random, a pseudo-random number generator will be used until the game
+      switchs back to random mode.</dd>
+</dl>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="CONFIGURATION_FILE"><a class="permalink" href="#CONFIGURATION_FILE">CONFIGURATION
+  FILE</a></h1>
+<p class="Pp"><code class="Nm">bocfel</code> allows to you control its behavior
+    through a configuration file. This obviates the need to provide command-line
+    arguments each time you start a game, as well as allowing customization
+    based on which game is being played.</p>
+<p class="Pp">On Unix, the configuration file is located at
+    <span class="Pa">$XDG_CONFIG_HOME/bocfel/bocfelrc</span>. For legacy
+    reasons, if the file <span class="Pa">$HOME/.bocfelrc</span> exists, it will
+    be used instead. On Windows, the configuration file is located at
+    <span class="Pa">%APPDATA%\Bocfel\bocfel.ini</span>. An outline of the
+    config file is as follows:</p>
+<div class="Bd Pp Bd-indent Li">
+<pre>enable_escape = 1
+disable_color = 1
+
+[1-990831-d8b4]
+disable_color = 0
+
+[57-871221]
+int_number = 1</pre>
+</div>
+<p class="Pp">The first lines are general, and apply to all games. The bracketed
+    lines start a new group based on the ID contained in the brackets (see the
+    <code class="Fl">-i</code> option). Thus disable_color is set to zero only
+    for <var class="Ar">1-990831-d8b4</var>, and int_number is set to 1 only for
+    <var class="Ar">57-871221</var>. Comments begin with a # and continue to the
+    end of the line. Trailing whitespace is ignored.</p>
+<p class="Pp">The following are all the possible options, which are hopefully
+    self-explanatory:</p>
+<p class="Pp"></p>
+<ul class="Bl-item Bd-indent Bl-compact">
+  <li>eval_stack_size (n)</li>
+  <li>call_stack_size (n)</li>
+  <li>disable_color (b)</li>
+  <li>disable_timed (b)</li>
+  <li>enable_escape (b)</li>
+  <li>escape_string (s)</li>
+  <li>disable_fixed (b)</li>
+  <li>assume_fixed (b)</li>
+  <li>disable_graphics_font (b)</li>
+  <li>enable_alt_graphics (b)</li>
+  <li>disable_history_playback (b)</li>
+  <li>disable_term_keys (b)</li>
+  <li>username (s)</li>
+  <li>disable_meta_commands (b)</li>
+  <li>undo_slots (n)</li>
+  <li>int_number (n)</li>
+  <li>int_version (c)</li>
+  <li>disable_patches (b)</li>
+  <li>replay_on (b)</li>
+  <li>replay_name (s)</li>
+  <li>record_on (b)</li>
+  <li>record_name (s)</li>
+  <li>transcript_on (b)</li>
+  <li>transcript_name (s)</li>
+  <li>disable_abbreviations (b)</li>
+  <li>enable_censorship (b)</li>
+  <li>overwrite_transcript (b)</li>
+  <li>override_undo (b)</li>
+  <li>random_seed (n)</li>
+  <li>random_device (s)</li>
+</ul>
+<p class="Pp">The parenthesized character describes the type of argument: b is a
+    boolean (1 is true, 0 is false), c is a character, n is a number, and s is a
+    string. These all correspond to possible command-line arguments.</p>
+<p class="Pp">In addition to analogs to the command-line arguments, there are a
+    few other options that can be set through the configuration file:</p>
+<ul class="Bl-bullet Bd-indent">
+  <li>Cheating: see the <a class="Sx" href="#CHEATING">CHEATING</a> section
+      below.</li>
+  <li>Autosaving: when autosaving is enabled, <code class="Nm">bocfel</code>
+      will perform a save each time input is read, silently storing the save
+      file to a persistent location on disk. On startup, if that file exists and
+      is a valid save file, it will be loaded. This allows players to continue
+      from where they left off without needing to explicitly save. If the user
+      explicitly quits the game (usually via the QUIT command, but in fact any
+      time the @quit opcode is called), the autosave file will be removed,
+      allowing the game to start from the beginning next time.
+    <p class="Pp">Autosaving is not perfect: history is saved and replayed, but
+        only in the lower window. The contents of the upper window, if it is
+        being used, are not saved. That means that if the upper window is in
+        use, it will likely look incorrect after autorestore, because the game
+        will not know it needs to redraw it. This might be something that's
+        quickly corrected by the game (e.g. if it redraws the upper window each
+        turn), but it might not be.</p>
+    <p class="Pp">To enable this feature, set the &#x201C;autosave&#x201D;
+        option, in the configuration file, to true (1). By default, autosaving
+        is disabled. At the moment, this feature is available only on Unix and
+        Windows. The location of autosave directory is
+        <span class="Pa">$XDG_DATA_HOME/bocfel/autosave</span> on Unix and
+        <span class="Pa">%APPDATA%\bocfel\autosave</span> on Windows.</p>
+  </li>
+  <li>Persistent transcripts: if enabled, <code class="Nm">bocfel</code> will
+      automatically keep a transcript of the entire game session, irrespective
+      of whether &#x201C;official&#x201D; transcripting provided by the
+      Z-machine is turned on. This transcript can be saved to a file with the
+      <b class="Sy">/savetranscript</b> meta command (see the
+      <a class="Sx" href="#META_COMMANDS">META COMMANDS</a> section below). In
+      addition, the transcript will be stored in save files, including, if
+      enabled, autosave files. This means that transcripts will persist across
+      sessions, so you will have the full transcript without having to remember
+      to turn it on, or where you stored it.
+    <p class="Pp">To enable this feature, set the
+        &#x201C;persistent_transcript&#x201D; option, in the configuration file,
+        to true (1).</p>
+  </li>
+  <li>Text editor: <code class="Nm">bocfel</code> allows the user to take notes
+      in an external text editor and will include the notes in save files to
+      allow notes to be associated with a particular gaming session across saves
+      and restores. In addition, the configuration file can be edited via a text
+      editor launched by <code class="Nm">bocfel</code>. On Windows and macOS,
+      the system text editor is used. On other Unix platforms, a default list of
+      GUI text editors is tried. If you want to set a specific text editor, the
+      &#x201C;editor&#x201D; configuration entry can be set to whichever editor
+      you would like. This is either an absolute path to an editor (e.g.
+      <span class="Pa">/usr/bin/kate</span>) or the name of an executable in the
+      path (e.g. <span class="Pa">kate</span>). The editor must not run in the
+      background, or else <code class="Nm">bocfel</code> won't be able to
+      determine when it has exited. Some editors fork into the background by
+      default, but can be told to stay in the foreground instead with a flag
+      such as <var class="Ar">--nofork</var>.</li>
+  <li>Run-time game patching: <code class="Nm">bocfel</code> has some built-in
+      patches to fix bugs in games, but if new patches are needed, they can also
+      be added via the configuration file, meaning you do not have to wait for a
+      new <code class="Nm">bocfel</code> release in order to provide a patch.
+      The syntax is as follows:
+    <div class="Bd Pp Bd-indent Li">
+    <pre>patch = 0xd3d4 3 [0x31, 0x0c, 0x73] [0x51, 0x73, 0x0c]</pre>
+    </div>
+    <p class="Pp">This indicates that 3 bytes at address 0xd3d4 are being
+        replaced. The first bracketed set of bytes indicates the expected
+        existing bytes, and the second bracketed set of bytes indicates the
+        replacement bytes. The replacement set must be the same size as the
+        existing set. Such patches should be included only in a specific game's
+        group; otherwise they will be applied to all games, which is generally a
+        bad idea.</p>
+  </li>
+  <li>Fine-grained control over colors in Gargoyle; this does not apply to any
+      other build types.
+    <p class="Pp">At the most basic, there are 8 colors that the Z-machine can
+        use, corresponding to ANSI colors: black, red, green, yellow, blue,
+        magenta, cyan, and white. The syntax for setting these is:</p>
+    <div class="Bd Pp Bd-indent Li">
+    <pre>color_red = 0xc23621</pre>
+    </div>
+    <p class="Pp">The color is specified as a 24-bit RGB value, 8 bits per
+        color. The above is thus 0xc2 red, 0x36 green, and 0x21 blue. The value
+        must be specified in hexadecimal, with an optional leading 0x.</p>
+  </li>
+</ul>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="STYLES"><a class="permalink" href="#STYLES">STYLES</a></h1>
+<p class="Pp">The Z-machine allows for different text styles to be selected:
+    these are emphasized (typically italicized or underlined), bold, and reverse
+    video. In addition, a fixed-width font can be selected. Glk does not
+    guarantee the appearance of styles; it only allows you to select from a list
+    of uses, rather than appearances. The following Glk styles are how
+    <code class="Nm">bocfel</code> maps the Z-machine's text styles:</p>
+<p class="Pp">Italic (or emphasized) uses the Emphasized style. Bold uses the
+    Subheader style. Reverse video uses the Alert style. Fixed-width uses the
+    Preformatted style.</p>
+<p class="Pp">These were chosen because they map appropriately in the glktermw
+    Glk implementation. If your Glk implementation does not render these styles
+    in a manner you like, consult its documentation to see if it is possible to
+    change the appearance of the various Glk styles.</p>
+<p class="Pp">Gargoyle, although a Glk implementation, does not have these
+    issues. The combination of styles is possible, and the appearance of styles
+    can be guaranteed.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="CHARACTER_GRAPHICS_FONT"><a class="permalink" href="#CHARACTER_GRAPHICS_FONT">CHARACTER
+  GRAPHICS FONT</a></h1>
+<p class="Pp"><i class="Em">Beyond Zork</i> can make use of a character graphics
+    font. This font is used for drawing the interactive map, arrows, and runes.
+    Most of the runes and arrows have Unicode equivalents and can be displayed
+    if you have a font that contains these characters. Unicode also includes
+    box-drawing characters which can be used to approximate the map in
+    <i class="Em">Beyond Zork</i>. These are not perfect, but they are not
+    terrible.</p>
+<p class="Pp">The <code class="Fl">-g</code> option disables the character
+    graphics font, but unfortunately the ability to tell a game that a
+    particular font is unavailable postdates Infocom, so this flag will not
+    prevent <i class="Em">Beyond Zork</i> from trying to use it. Instead,
+    <i class="Em">Beyond Zork</i> makes use of the interpreter number (see
+    <code class="Fl">-n</code>) to decide whether to use character graphics. If
+    you are using a font that does not provide the necessary Unicode characters,
+    you will want to run <i class="Em">Beyond Zork</i> without the character
+    graphics font. This is easily accomplished by answering &#x201C;No&#x201D;
+    when the game asks you if you are using a VT-220 (this only happens when the
+    interpreter number is set to 1, which is the default).</p>
+<p class="Pp">If the character font is disabled with <code class="Fl">-g</code>
+    and a game tries to use it anyway (as is the case with <i class="Em">Beyond
+    Zork</i>), the output will appear garbled, but only for that font. Anything
+    the game prints out in a normal font will look fine.</p>
+<p class="Pp">See section 16 of the <i class="Em">Z-Machine Standards
+    Document</i> 1.1 for more information.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="META_COMMANDS"><a class="permalink" href="#META_COMMANDS">META
+  COMMANDS</a></h1>
+<p class="Pp"><code class="Nm">bocfel</code> includes support for &#x201C;meta
+    commands&#x201D;, which are commands interpreted by
+    <code class="Nm">bocfel</code> itself instead of the game. These are
+    introduced with a slash
+    (&#x2018;<a class="permalink" href="#/"><b class="Sy" id="/">/</b></a>&#x2019;),
+    chosen in an attempt to not clash with game commands. These meta commands
+    can be entered at any point the game requests user input, e.g. on each turn.
+    They are as follows, and are case sensitive:</p>
+<div class="Bd-indent">
+<dl class="Bl-tag">
+  <dt id="/undo"><a class="permalink" href="#/undo"><b class="Sy">/undo</b></a></dt>
+  <dd>Undo a turn. This is similar to the UNDO command some games provide, but
+      has two distinct advantages: it works even in games that do not provide
+      undo, and it provides multiple undo even in games which do not support
+      multiple undo.</dd>
+  <dt id="/scripton"><a class="permalink" href="#/scripton"><b class="Sy">/scripton</b></a></dt>
+  <dd>Start a transcript.</dd>
+  <dt id="/scriptoff"><a class="permalink" href="#/scriptoff"><b class="Sy">/scriptoff</b></a></dt>
+  <dd>Stop a transcript.</dd>
+  <dt id="/recon"><a class="permalink" href="#/recon"><b class="Sy">/recon</b></a></dt>
+  <dd>Start a command record.</dd>
+  <dt id="/recoff"><a class="permalink" href="#/recoff"><b class="Sy">/recoff</b></a></dt>
+  <dd>Stop a command record.</dd>
+  <dt id="/replay"><a class="permalink" href="#/replay"><b class="Sy">/replay</b></a></dt>
+  <dd>Replay a command record.</dd>
+  <dt id="/save"><a class="permalink" href="#/save"><b class="Sy">/save</b></a></dt>
+  <dd>Save the game. This creates save files that are incompatible with those
+      created by SAVE, so they should only be restored with
+      <b class="Sy">/restore</b>. <code class="Nm">bocfel</code> has built-in
+      protection to prevent a file saved with a normal SAVE command from being
+      confused with one saved by <b class="Sy">/save</b>, and vice versa.
+    <p class="Pp">Because it creates non-standard save files, this command
+        should be avoided unless it is absoulutely necessary, e.g. if the game
+        has disabled saving. It was added to <code class="Nm">bocfel</code>
+        solely for the case of such anti-social games.</p>
+  </dd>
+  <dt id="/restore"><a class="permalink" href="#/restore"><b class="Sy">/restore</b></a></dt>
+  <dd>Restore a game saved by <b class="Sy">/save</b>. Do not attempt to use
+      <b class="Sy">/restore</b> to restore games saved with a normal SAVE
+      command.</dd>
+  <dt id="/ps"><a class="permalink" href="#/ps"><b class="Sy">/ps</b></a></dt>
+  <dd>Push a save state onto the in-memory stack.
+    <p class="Pp">This is meant to serve as an alternative to on-disk save files
+        for when you are trying something dangerous in a game. In such a case,
+        there is generally no need for a save file to be stored on the disk
+        because the save state is not meant to be persistent: it only needs to
+        last long enough to be restored in the same session.</p>
+    <p class="Pp">Because a stack is used, <b class="Sy">/ps</b> can be used
+        multiple times, allowing you to jump backward as many times as there are
+        states. The maximum number of states stored is 25. Once this number of
+        states is reached, each new state causes the oldest state to be
+      dropped.</p>
+  </dd>
+  <dt><b class="Sy">/ps [description]</b></dt>
+  <dd>Identical to <b class="Sy">/ps</b>, except that when the save state is
+      displayed by <b class="Sy">/ls</b>, the supplied description is shown
+      rather than the time of the save.
+    <p class="Pp">Please note that at the current time, any characters which are
+        not printable ASCII characters will be replaced with a question
+      mark.</p>
+  </dd>
+  <dt id="/pop"><a class="permalink" href="#/pop"><b class="Sy">/pop</b></a></dt>
+  <dd>Restore the last-stored in-memory save state, as created by
+      <b class="Sy">/ps</b>, removing it from the stack.</dd>
+  <dt><b class="Sy">/pop [slot]</b></dt>
+  <dd>Restore the specified in-memory save slot. [slot] must correspond to one
+      of the slot numbers shown by <b class="Sy">/ls</b>. The specified save, as
+      well as any newer saves, will be removed from the stack.</dd>
+  <dt id="/drop"><a class="permalink" href="#/drop"><b class="Sy">/drop</b></a></dt>
+  <dd>Drop the last-stored in-memory save state, as created by
+      <b class="Sy">/ps</b>, removing it from the stack.</dd>
+  <dt><b class="Sy">/drop [slot]</b></dt>
+  <dd>Drop the specified in-memory save slot. [slot] must correspond to one of
+      the slot numbers shown by <b class="Sy">/ls</b>. The specified save, as
+      well as any newer saves, will be removed from the stack.</dd>
+  <dt><b class="Sy">/drop all</b></dt>
+  <dd>Drop all in-memory save slots, removing them from the stack.</dd>
+  <dt id="/ls"><a class="permalink" href="#/ls"><b class="Sy">/ls</b></a></dt>
+  <dd>List all available in-memory save states. Each state is shown either as a
+      string representing the time when the state was saved, or, if it was
+      supplied, the description passed to <b class="Sy">/ps</b>. The last-listed
+      state, which is marked with an asterisk, is the default state which will
+      be restored with <b class="Sy">/pop</b>.</dd>
+  <dt id="/savetranscript"><a class="permalink" href="#/savetranscript"><b class="Sy">/savetranscript</b></a></dt>
+  <dd>If persistent transcripting is turned on, this will allow the transcript
+      to be written to a file.</dd>
+  <dt id="/notes"><a class="permalink" href="#/notes"><b class="Sy">/notes</b></a></dt>
+  <dd>Start a text editor to take notes associated with this gaming session.
+      Such notes will persist across saves.</dd>
+  <dt id="/shownotes"><a class="permalink" href="#/shownotes"><b class="Sy">/shownotes</b></a></dt>
+  <dd>Display (in the main window) notes which have been taken.</dd>
+  <dt id="/savenotes"><a class="permalink" href="#/savenotes"><b class="Sy">/savenotes</b></a></dt>
+  <dd>Write notes to a file.</dd>
+  <dt id="/status"><a class="permalink" href="#/status"><b class="Sy">/status</b></a></dt>
+  <dd>Display the status line. This only works for V1, V2, and V3 games, and is
+      meant to be used either in non-Glk mode, or if the Glk implementation
+      being used does not support windows (e.g. cheapglk).</dd>
+  <dt id="/disable"><a class="permalink" href="#/disable"><b class="Sy">/disable</b></a></dt>
+  <dd>Disable meta commands for the remainder of the session. This is useful if
+      the game itself expects input to start with a slash character.</dd>
+  <dt id="/say"><a class="permalink" href="#/say"><b class="Sy">/say
+    [command]</b></a></dt>
+  <dd>Pretend like [command] was typed. As with <b class="Sy">/disable</b>, this
+      is meant for games which expect input to start with a slash
+    character.</dd>
+  <dt id="/config"><a class="permalink" href="#/config"><b class="Sy">/config</b></a></dt>
+  <dd>Open <code class="Nm">bocfel</code>'s configuration file in a text
+    editor.</dd>
+  <dt id="/debug"><a class="permalink" href="#/debug"><b class="Sy">/debug
+    [...]</b></a></dt>
+  <dd>Perform a debugging operation; see
+      <a class="Sx" href="#META_DEBUG_COMMANDS">META DEBUG COMMANDS</a>.</dd>
+  <dt id="/quit"><a class="permalink" href="#/quit"><b class="Sy">/quit</b></a></dt>
+  <dd>Quit immediately, as though the @quit opcode were executed. In general
+      this isn't necessary, but if you're in a game with no clear way to quit
+      and you want the autosave file removed, <b class="Sy">/quit</b> will
+      accomplish that.</dd>
+</dl>
+</div>
+<p class="Pp">Please note that <b class="Sy">/save</b> and
+    <b class="Sy">/restore</b> are experimental.</p>
+<p class="Pp" id="before">Mixing in-memory saves with undo can have odd effects.
+    For example, if a save state is pushed, and undo is then called multiple
+    times, returning to a point which occurred before the <b class="Sy">/ps</b>
+    call, popping the save state will still jump to the <b class="Sy">/ps</b>
+    save position, effectively cancelling the undo calls. The undo states will
+    not be recreated. Similarly, if undo is called right after
+    <b class="Sy">/pop</b>, it will succeed, but will not undo the
+    <b class="Sy">/pop</b> call. Instead, the effect is the same as if undo had
+    been called on the turn
+    <a class="permalink" href="#before"><i class="Em">before</i></a>
+    <b class="Sy">/pop</b> was called. This is because meta commands are not
+    considered game commands and thus do not cause undo states to be stored.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="META_DEBUG_COMMANDS"><a class="permalink" href="#META_DEBUG_COMMANDS">META
+  DEBUG COMMANDS</a></h1>
+<p class="Pp">The <b class="Sy">/debug</b> command starts a debugging operation.
+    For some debugging operations, an address is expected. This is either an
+    absolute address, specified in hexadecimal with an optional leading
+    <b class="Sy">0x</b>, or it is a global variable. Global variables have the
+    syntax <a class="permalink" href="#Gxx"><b class="Sy" id="Gxx">Gxx</b></a>,
+    where <a class="permalink" href="#xx"><b class="Sy" id="xx">xx</b></a> is a
+    hexadecimal value in the range [00, ef], corresponding to global variables 0
+    to 239.</p>
+<p class="Pp">The debug commands are as follows:</p>
+<div class="Bd-indent">
+<dl class="Bl-tag">
+  <dt id="change"><a class="permalink" href="#change"><b class="Sy">change
+    start</b></a></dt>
+  <dd>Begin a &#x201C;change&#x201D; operation. This tracks word-sized memory
+      addresses, allowing you to see if the values at any addresses have
+      increased or decreased since the last check. This is primarily useful for
+      cheating (see <a class="Sx" href="#CHEATING">CHEATING</a>), helping, for
+      example, to determine which memory address is used to track hunger or
+      thirst.</dd>
+  <dt id="change~2"><a class="permalink" href="#change~2"><b class="Sy">change
+    dec</b></a></dt>
+  <dd>Display a list of all memory addresses which have decreased since the last
+      change operation (either a <b class="Sy">change start</b>,
+      <b class="Sy">change inc</b>, or <b class="Sy">change dec</b>. Values are
+      treated as signed words, so a change from 0 to 65535 is considered a
+      decrease from 0 to -1.</dd>
+  <dt id="change~3"><a class="permalink" href="#change~3"><b class="Sy">change
+    inc</b></a></dt>
+  <dd>Display a list of all memory addresses which have decreased since the last
+      change operation.</dd>
+  <dt id="scan"><a class="permalink" href="#scan"><b class="Sy">scan
+    start</b></a></dt>
+  <dd>Begin a &#x201C;scan&#x201D; operation. This tracks word-sized memory
+      addresses, checking if particular addresses have specific values over
+      time. As with &#x201C;change&#x201D; operations, this is useful mainly for
+      cheating. An example would be tracking which memory address holds the
+      amount of money being carried. If you have $50, you can scan all addresses
+      for the value 50. After spending $5, scan all addresses for 45. Repeat
+      until only one address matches and that is likely where the money count is
+      being stored.</dd>
+  <dt id="scan~2"><a class="permalink" href="#scan~2"><b class="Sy">scan
+    [N]</b></a></dt>
+  <dd>Scan all memory addresses for the value <b class="Sy">N</b>, which is a
+      signed decimal integer (hexadecimal if a leading 0x is used, octal if a
+      leading 0 is used). The total number of matching addresses (constrained by
+      previous <b class="Sy">scan</b> operations) is then printed.</dd>
+  <dt id="scan~3"><a class="permalink" href="#scan~3"><b class="Sy">scan
+    show</b></a></dt>
+  <dd>Display all addresses matching all previous <b class="Sy">scan</b>
+      criteria. This is a separate operation because initial scans will
+      potentially match thousands of addresses.</dd>
+  <dt id="print"><a class="permalink" href="#print"><b class="Sy">print
+    [address]</b></a></dt>
+  <dd>Print the word (as both signed decimal and unsigned hexadecimal) at
+      <b class="Sy">address</b>.</dd>
+  <dt id="freeze"><a class="permalink" href="#freeze"><b class="Sy">freeze
+    [address] [value]</b></a></dt>
+  <dd>Freeze a 16-bit value in memory; this is analogous to the
+      <b class="Sy">freeze</b> configuration variable (see
+      <a class="Sx" href="#CHEATING">CHEATING</a>). <b class="Sy">address</b> is
+      the address to freeze, and <b class="Sy">value</b> is the value it should
+      be frozen to. <b class="Sy">value</b> can be decimal, hexadecimal, or
+      octal, with a leading <b class="Sy">0x</b> signifying hexadecimal and a
+      leading <b class="Sy">0</b> signifying octal.
+    <p class="Pp">Please note that it is possible for
+        <code class="Nm">bocfel</code> to be built without cheating support, so
+        this and related commands might not work.</p>
+  </dd>
+  <dt id="unfreeze"><a class="permalink" href="#unfreeze"><b class="Sy">unfreeze
+    [address]</b></a></dt>
+  <dd>Unfreeze the 16-bit value which is frozen at <b class="Sy">address</b>;
+      the address is parsed identically as for <b class="Sy">freeze</b>. It is
+      not an error to unfreeze an unfrozen value.</dd>
+  <dt id="show_freeze"><a class="permalink" href="#show_freeze"><b class="Sy">show_freeze</b></a></dt>
+  <dd>Display all frozen values.</dd>
+  <dt id="watch"><a class="permalink" href="#watch"><b class="Sy">watch
+    [address]</b></a></dt>
+  <dd>Report any changes to the 16-bit word at <b class="Sy">address</b>.
+    <p class="Pp">Please note that it is possible for
+        <code class="Nm">bocfel</code> to be built without watch support, so
+        this and related commands might not work.</p>
+  </dd>
+  <dt id="watch~2"><a class="permalink" href="#watch~2"><b class="Sy">watch
+    all</b></a></dt>
+  <dd>Watch every address for changes. This will likely produce a lot of
+    output.</dd>
+  <dt id="unwatch"><a class="permalink" href="#unwatch"><b class="Sy">unwatch
+    [address]</b></a></dt>
+  <dd>Stop watching <b class="Sy">address</b> for changes. It is not an error to
+      stop watching an address which is not being watched.</dd>
+  <dt id="unwatch~2"><a class="permalink" href="#unwatch~2"><b class="Sy">unwatch
+    all</b></a></dt>
+  <dd>Stop watching all addresses which are currently being watched.</dd>
+  <dt id="show_watch"><a class="permalink" href="#show_watch"><b class="Sy">show_watch</b></a></dt>
+  <dd>Display all watched-for values.</dd>
+</dl>
+</div>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="SOUND_EFFECTS"><a class="permalink" href="#SOUND_EFFECTS">SOUND
+  EFFECTS</a></h1>
+<p class="Pp">Sound effects are supported under Glk, assuming the Glk library
+    supports sound. The sound effects should be bundled in a Blorb file. If the
+    story file itself is stored in a Blorb file, that file is used to find the
+    sound effects. Otherwise, a separate Blorb file must exist and be named as
+    follows: if the story file is <span class="Pa">/foo/bar/sherlock.z5</span>,
+    then the Blorb file must be
+  <span class="Pa">/foo/bar/sherlock.blb</span>.</p>
+<p class="Pp">Bleeps (sound effects 1 and 2) are supported under sufficiently
+    modern Gargoyle releases.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="CHEATING"><a class="permalink" href="#CHEATING">CHEATING</a></h1>
+<p class="Pp">There is extremely rudimentary support for
+    &#x201C;cheating&#x201D;. <code class="Nm">bocfel</code> is able to freeze
+    certain areas of memory so that they always report the same value. The idea
+    behind this is to prevent hunger and thirst counters from forcing you to eat
+    and drink.</p>
+<p class="Pp">Cheating is available through the configuration file as well as
+    through meta debug commands (see
+    <a class="Sx" href="#META_DEBUG_COMMANDS">META DEBUG COMMANDS</a> for
+    information on using meta debug commands to cheat).</p>
+<p class="Pp">When the configuration file is used, cheats are treated like any
+    other configuration variable. The syntax is as follows:
+    freeze:<b class="Sy">address</b>:<b class="Sy">value</b>.</p>
+<p class="Pp">This causes the word (an unsigned 16-bit value) at address
+    <b class="Sy">address</b> to always contain the value
+    <b class="Sy">value</b>; <b class="Sy">value</b> can be decimal,
+    hexadecimal, or octal, with a leading <b class="Sy">0x</b> signifying
+    hexadecimal and a leading <b class="Sy">0</b> signifying octal.</p>
+<p class="Pp">Example:</p>
+<div class="Bd Pp Bd-indent Li">
+<pre>cheat = freeze:0xabcd:0
+cheat = freeze:G00:0</pre>
+</div>
+<p class="Pp">Visit
+    <a class="Lk" href="http://bocfel.org/cheats/">http://bocfel.org/cheats/</a>
+    for a list of a few cheats for some Infocom games. More cheats are
+    potentially discoverable using meta debug commands (see the
+    <a class="Sx" href="#META_DEBUG_COMMANDS">META DEBUG COMMANDS</a> section).
+    A more detailed explanation of how to figure out cheats is beyond the scope
+    of this document.</p>
+<p class="Pp">Please note that it is possible for <code class="Nm">bocfel</code>
+    to be built without support for cheating, in which case these cheats will
+    silently do nothing. The <code class="Fl">-v</code> option can be used to
+    determine whether this is the case.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="AUXILIARY_FILES"><a class="permalink" href="#AUXILIARY_FILES">AUXILIARY
+  FILES</a></h1>
+<p class="Pp">The Z-machine provides the ability for games to load and save
+    files on the host system (see section 7.6 of version 1.1 of the Z-machine
+    Standards Document). <code class="Nm">bocfel</code> confines these files to
+    game-specific directories so that games are unable to overwrite arbitrary
+    files on the host system. The game-specific directories are places in
+    platform-specific locations. On Unix, this directory is
+    <span class="Pa">$XDG_DATA_HOME/bocfel/auxiliary</span>. On Windows, it is
+    <span class="Pa">%APPDATA%/Bocfel/auxiliary</span>. The individual game
+    directories are the game IDs as reported by the <code class="Fl">-i</code>
+    option.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="STANDARDS"><a class="permalink" href="#STANDARDS">STANDARDS</a></h1>
+<p class="Pp"><code class="Nm">bocfel</code> is believed to comply fully with
+    version 1.1 of <i class="Em">The Z-machine Standards Document</i>; see
+    <a class="Lk" href="https://www.inform-fiction.org/zmachine/standards/z1point1/index.html">https://www.inform-fiction.org/zmachine/standards/z1point1/index.html</a>
+    and
+    <a class="Lk" href="http://ifarchive.org/if-archive/infocom/interpreters/specification/ZSpec11.txt">http://ifarchive.org/if-archive/infocom/interpreters/specification/ZSpec11.txt</a>.</p>
+</section>
+<section class="Sh">
+<h1 class="Sh" id="AUTHORS"><a class="permalink" href="#AUTHORS">AUTHORS</a></h1>
+<p class="Pp"><span class="An">Chris Spiegel</span>
+    &#x27E8;cspiegel@gmail.com&#x27E9;</p>
+</section>
+</div>
+<table class="foot">
+  <tr>
+    <td class="foot-date">September 16, 2021</td>
+    <td class="foot-os"></td>
+  </tr>
+</table>
+</body>
+</html>
